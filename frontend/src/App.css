@@ -8,12 +8,28 @@ body {
 }
 
 .container {
-  max-width: 400px;
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* Damit es immer in der Mitte ist */
   text-align: center;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background: #f4f4f4;
+  margin: 8px 0;
+  padding: 10px;
+  border-radius: 5px;
+  width: 300px; /* Setzt eine Breite für die Liste */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 h1 {
