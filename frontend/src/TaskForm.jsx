@@ -18,6 +18,7 @@ const TaskForm = ({ onAdd }) => {
                 placeholder="Neue Aufgabe..." 
                 value={title} 
                 onChange={(e) => setTitle(e.target.value)} 
+                
             />
             <button type="submit">Hinzufügen</button>
         </form>
