@@ -43,12 +43,20 @@ const TaskList = () => {
         setTasks(tasks.filter((task) => task.id !== id));
     };
 
+    // Funktion zur Behandlung von Tastendruckereignissen
+    const handleKeyPress = (event) => {
+        if (event.key === "Enter") {
+            addTask();
+        }
+    };
+
     return (
         <div className="container">
             <h1>Meine ToDo-List</h1>
             <input
                 value={newTask}
                 onChange={(e) => setNewTask(e.target.value)}
+                onKeyPress={handleKeyPress} // onKeyPress-Ereignis hinzufügen
                 placeholder="Neue Aufgabe..."
             />
             <button onClick={addTask}>Hinzufügen</button>

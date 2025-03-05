@@ -1,3 +1,8 @@
+h1 {
+  color: rgb(70, 5, 248);
+  text-decoration: underline red;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
