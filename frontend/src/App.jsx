@@ -45,6 +45,7 @@ const TaskList = () => {
 
     return (
         <div className="container">
+            <h1>Meine ToDo-List</h1>
             <input
                 value={newTask}
                 onChange={(e) => setNewTask(e.target.value)}
@@ -55,10 +56,10 @@ const TaskList = () => {
             <ul>
                 {tasks.map((task) => (
                     <ol key={task.id} className={task.completed ? "completed" : ""}>
+                        <button onClick={() => deleteTask(task.id)}>❌</button>
                         <span onClick={() => toggleTask(task.id, task.completed)}>
                             {task.completed ? "✅ " : "⬜ "} {task.title}
                         </span>
-                        <button onClick={() => deleteTask(task.id)}>❌</button>
                     </ol>
                 ))}
             </ul>

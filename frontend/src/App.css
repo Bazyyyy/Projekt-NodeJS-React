@@ -16,10 +16,6 @@ body {
   text-align: center;
 }
 
-ul {
-  list-style: none;
-  padding: 0;
-}
 
 li {
   background: #f4f4f4;
@@ -80,3 +76,4 @@ button:hover {
 .task button:hover {
   background: darkred;
 }
+
