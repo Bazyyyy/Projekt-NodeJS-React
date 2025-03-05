@@ -54,12 +54,12 @@ const TaskList = () => {
 
             <ul>
                 {tasks.map((task) => (
-                    <li key={task.id} className={task.completed ? "completed" : ""}>
+                    <ol key={task.id} className={task.completed ? "completed" : ""}>
                         <span onClick={() => toggleTask(task.id, task.completed)}>
                             {task.completed ? "✅ " : "⬜ "} {task.title}
                         </span>
                         <button onClick={() => deleteTask(task.id)}>❌</button>
-                    </li>
+                    </ol>
                 ))}
             </ul>
         </div>
