@@ -10,9 +10,16 @@ const TaskList = () => {
     useEffect(() => {
         fetch(API_URL)
             .then((res) => res.json())
-            .then((data) => setTasks(data))
+            .then((data) => {
+                const updatedTasks = data.map(task => ({
+                    ...task,
+                    completed: task.completed === 1 // Wenn completed 1 ist, setze es auf true
+                }));
+                setTasks(updatedTasks); // Setzt die Aufgaben mit dem richtigen Status
+            })
             .catch((err) => console.error("Fehler beim Laden der Aufgaben:", err));
     }, []);
+    
 
     // ➕ Neue Aufgabe hinzufügen
     const addTask = async () => {
@@ -28,14 +35,16 @@ const TaskList = () => {
     };
 
     // ✔️ Aufgabe als erledigt markieren
-    const toggleTask = async (id, completed) => {
+    const toggleTask = async (id, completed, title) => {
         await fetch(`${API_URL}/${id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ completed: !completed }),
+            body: JSON.stringify({ title, completed: !completed }), // ✅ sendet auch den Titel
         });
+        
         setTasks(tasks.map((task) => (task.id === id ? { ...task, completed: !completed } : task)));
     };
+    
 
     // 🗑️ Aufgabe löschen
     const deleteTask = async (id) => {
@@ -60,21 +69,27 @@ const TaskList = () => {
                 placeholder="Neue Aufgabe..."
             />
             <button onClick={addTask}>Hinzufügen</button>
-
+    
             <ul>
-            {tasks.map((task) => (
-                <ol key={task.id}>
-                <button onClick={() => deleteTask(task.id)}>🗑️</button>
-                <span onClick={() => toggleTask(task.id, task.completed)} className={task.completed ? "completed" : ""}>
-                    {task.title}
-                </span>
-                {task.completed ? " ✔️" : ""}
-                </ol>
-            ))}
+                {tasks
+                    .slice() // Erstellt eine Kopie, damit das Original unverändert bleibt
+                    .sort((a, b) => a.completed - b.completed) // Sortiert erledigte nach unten
+                    .map((task) => (
+                        <ol key={task.id}>
+                            <button onClick={() => deleteTask(task.id)}>🗑️</button>
+                            <span 
+                                onClick={() => toggleTask(task.id, task.completed)} 
+                                className={task.completed ? "completed" : ""}
+                            >
+                                {task.title}
+                            </span>
+                            {task.completed ? " ✔️" : ""}
+                        </ol>
+                    ))}
             </ul>
-
         </div>
     );
+
 };
 
 export default TaskList;

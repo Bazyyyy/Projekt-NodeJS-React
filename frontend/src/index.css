@@ -1,6 +1,6 @@
 h1 {
-  color: rgb(70, 5, 248);
-  text-decoration: underline red;
+  color: rgb(12, 69, 10);
+  text-decoration: underline rgb(12, 69, 10);
 }
 
 :root {
@@ -11,7 +11,7 @@ h1 {
 
   color-scheme: light dark;
   color: black;
-  background-color: #302e2e;
+  background-color: #675f5f;
 
 }
 body {
@@ -21,6 +21,7 @@ body {
   align-items: center;
   min-width: 300px;
   min-height: 100vh;
+  font-family: 'indie flower', cursive;
 }
 
 h1 {
@@ -43,15 +44,19 @@ button:hover {
 .container {
   width: 100vw;
   height: 100vh;
-  background: rgb(151, 141, 141);
+  background: rgb(191, 182, 182);
   padding: 50px;
   border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(102, 175, 134, 0.1);
   text-align: center;
+  background-image: url('bg.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
 }
 input {
   background-color: white;
-  color: rgb(15, 15, 15);
+  color: rgb(0, 0, 0);
   padding: 10px;
   border-radius: 10px;
 }
@@ -70,7 +75,7 @@ button {
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
-  background-color: #1a1a1a;
+  background-color: #031304;
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -78,6 +83,7 @@ ol {
   display: flex;
   align-items: center;
   margin-bottom: 10px; /* Optionaler Abstand zwischen den Listenelementen */
+  padding-left: 30%;
 }
 ol button {
   padding: 5px;

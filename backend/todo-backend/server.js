@@ -28,9 +28,17 @@ db.run(`
 app.get("/tasks", (req, res) => {
     db.all("SELECT * FROM tasks", [], (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
-        res.json(rows);
+
+        // ✅ SQLite gibt `0/1`, aber wir wollen `true/false` für das Frontend
+        const tasks = rows.map(task => ({
+            ...task,
+            completed: task.completed === 1 // 🔄 Konvertiere `1` → `true`, `0` → `false`
+        }));
+
+        res.json(tasks);
     });
 });
+
 
 // Neue Aufgabe hinzufügen
 app.post("/tasks", (req, res) => {
@@ -48,10 +56,14 @@ app.put("/tasks/:id", (req, res) => {
     const { id } = req.params;
     const { title, completed } = req.body;
 
-    db.run("UPDATE tasks SET title = ?, completed = ? WHERE id = ?", [title, completed, id], function (err) {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json({ id, title, completed });
-    });
+    db.run("UPDATE tasks SET title = ?, completed = ? WHERE id = ?", 
+        [title, completed ? 1 : 0, id],  // ✅ Konvertiert `true` zu `1`, `false` zu `0`
+        function (err) {
+            if (err) return res.status(500).json({ error: err.message });
+            res.json({ id, title, completed });
+        }
+    );
+    
 });
 
 // Aufgabe löschen
