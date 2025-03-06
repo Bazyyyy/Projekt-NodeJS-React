@@ -27,7 +27,7 @@ const TaskList = () => {
         setNewTask(""); // Eingabefeld leeren
     };
 
-    // ✅ Aufgabe als erledigt markieren
+    // ✔️ Aufgabe als erledigt markieren
     const toggleTask = async (id, completed) => {
         await fetch(`${API_URL}/${id}`, {
             method: "PUT",
@@ -37,7 +37,7 @@ const TaskList = () => {
         setTasks(tasks.map((task) => (task.id === id ? { ...task, completed: !completed } : task)));
     };
 
-    // ❌ Aufgabe löschen
+    // 🗑️ Aufgabe löschen
     const deleteTask = async (id) => {
         await fetch(`${API_URL}/${id}`, { method: "DELETE" });
         setTasks(tasks.filter((task) => task.id !== id));
@@ -52,7 +52,7 @@ const TaskList = () => {
 
     return (
         <div className="container">
-            <h1>Meine ToDo-List</h1>
+            <h1>Meine ToDo-Liste</h1>
             <input
                 value={newTask}
                 onChange={(e) => setNewTask(e.target.value)}
@@ -64,10 +64,12 @@ const TaskList = () => {
             <ul>
                 {tasks.map((task) => (
                     <ol key={task.id} className={task.completed ? "completed" : ""}>
-                        <button onClick={() => deleteTask(task.id)}>❌</button>
+                        <button onClick={() => deleteTask(task.id)}>🗑️</button>
                         <span onClick={() => toggleTask(task.id, task.completed)}>
-                            {task.completed ? "✅ " : "⬜ "} {task.title}
+                            
+                        {task.title} {task.completed ? "✔️" : " "}
                         </span>
+                        
                     </ol>
                 ))}
             </ul>

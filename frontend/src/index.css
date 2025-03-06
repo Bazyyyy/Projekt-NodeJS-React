@@ -82,3 +82,6 @@ ol {
 ol button {
   padding: 5px;
 }
+.completed {
+  text-decoration: line-through;
+}
