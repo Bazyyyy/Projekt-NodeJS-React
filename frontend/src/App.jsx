@@ -62,17 +62,17 @@ const TaskList = () => {
             <button onClick={addTask}>Hinzufügen</button>
 
             <ul>
-                {tasks.map((task) => (
-                    <ol key={task.id} className={task.completed ? "completed" : ""}>
-                        <button onClick={() => deleteTask(task.id)}>🗑️</button>
-                        <span onClick={() => toggleTask(task.id, task.completed)}>
-                            
-                        {task.title} {task.completed ? "✔️" : " "}
-                        </span>
-                        
-                    </ol>
-                ))}
+            {tasks.map((task) => (
+                <ol key={task.id}>
+                <button onClick={() => deleteTask(task.id)}>🗑️</button>
+                <span onClick={() => toggleTask(task.id, task.completed)} className={task.completed ? "completed" : ""}>
+                    {task.title}
+                </span>
+                {task.completed ? " ✔️" : ""}
+                </ol>
+            ))}
             </ul>
+
         </div>
     );
 };
