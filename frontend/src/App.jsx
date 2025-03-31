@@ -4,99 +4,92 @@ const API_URL = "http://localhost:5000/tasks"; // Verbindung zum Backend
 
 const TaskList = () => {
     const [tasks, setTasks] = useState([]); // To-Do-Liste
-    const [newTask, setNewTask] = useState(""); // Eingabefeld für neue Aufgaben
+    const [newTask, setNewTask] = useState(""); // Eingabefeld
 
-    // 🔄 Lade Aufgaben beim Start der Anwendung
+    // 🔄 Lade Aufgaben beim Start
     useEffect(() => {
-        const fetchTasks = async () => {
-            try {
-                const response = await fetch(API_URL);
-                const data = await response.json();
-                setTasks(data.map(task => ({
+        fetch(API_URL)
+            .then((res) => res.json())
+            .then((data) => {
+                const updatedTasks = data.map(task => ({
                     ...task,
-                    completed: !!task.completed // SQLite gibt 1/0, konvertiere zu true/false
-                })));
-            } catch (err) {
-                console.error("Fehler beim Laden der Aufgaben:", err);
-            }
-        };
-        fetchTasks();
+                    completed: task.completed === 1 // Wenn completed 1 ist, setze es auf true
+                }));
+                setTasks(updatedTasks); // Setzt die Aufgaben mit dem richtigen Status
+            })
+            .catch((err) => console.error("Fehler beim Laden der Aufgaben:", err));
     }, []);
+    
 
     // ➕ Neue Aufgabe hinzufügen
     const addTask = async () => {
-        if (!newTask.trim()) return; // Leere Eingabe ignorieren
-        try {
-            const response = await fetch(API_URL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ title: newTask }),
-            });
-            const task = await response.json();
-            setTasks([...tasks, task]); // Aufgabe zur Liste hinzufügen
-            setNewTask(""); // Eingabefeld leeren
-        } catch (err) {
-            console.error("Fehler beim Hinzufügen der Aufgabe:", err);
-        }
+        if (!newTask.trim()) return;
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ title: newTask }),
+        });
+        const task = await response.json();
+        setTasks([...tasks, task]); // Neue Aufgabe zur Liste hinzufügen
+        setNewTask(""); // Eingabefeld leeren
     };
 
     // ✔️ Aufgabe als erledigt markieren
-    const toggleTask = async (id, completed) => {
-        try {
-            await fetch(`${API_URL}/${id}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ completed: !completed }),
-            });
-            setTasks(tasks.map(task =>
-                task.id === id ? { ...task, completed: !completed } : task
-            ));
-        } catch (err) {
-            console.error("Fehler beim Aktualisieren der Aufgabe:", err);
-        }
+    const toggleTask = async (id, completed, title) => {
+        await fetch(`${API_URL}/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ title, completed: !completed }), // ✅ sendet auch den Titel
+        });
+        
+        setTasks(tasks.map((task) => (task.id === id ? { ...task, completed: !completed } : task)));
     };
+    
 
     // 🗑️ Aufgabe löschen
     const deleteTask = async (id) => {
-        try {
-            await fetch(`${API_URL}/${id}`, { method: "DELETE" });
-            setTasks(tasks.filter(task => task.id !== id)); // Aufgabe aus Zustand entfernen
-        } catch (err) {
-            console.error("Fehler beim Löschen der Aufgabe:", err);
+        await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+        setTasks(tasks.filter((task) => task.id !== id));
+    };
+
+    // Funktion zur Behandlung von Tastendruckereignissen
+    const handleKeyPress = (event) => {
+        if (event.key === "Enter") {
+            addTask();
         }
     };
 
     return (
         <div className="container">
-            <h1>Meine To-Do-Liste</h1>
-            <div>
-                <input
-                    value={newTask}
-                    onChange={(e) => setNewTask(e.target.value)}
-                    placeholder="Neue Aufgabe..."
-                />
-                <button onClick={addTask}>Hinzufügen</button>
-            </div>
+            <h1>Meine ToDo-Liste</h1>
+            <input
+                value={newTask}
+                onChange={(e) => setNewTask(e.target.value)}
+                onKeyPress={handleKeyPress} // onKeyPress-Ereignis hinzufügen
+                placeholder="Neue Aufgabe..."
+            />
+            <button onClick={addTask}>Hinzufügen</button>
+    
             <ul>
                 {tasks
-                    .slice() // Kopie der Liste
-                    .sort((a, b) => a.completed - b.completed) // Sortiere erledigte Aufgaben nach unten
-                    .map(task => (
-                        <li key={task.id}>
-                            <input
-                                type="checkbox"
-                                checked={task.completed}
-                                onChange={() => toggleTask(task.id, task.completed)}
-                            />
-                            <span style={{ textDecoration: task.completed ? "line-through" : "none" }}>
+                    .slice() // Erstellt eine Kopie, damit das Original unverändert bleibt
+                    .sort((a, b) => a.completed - b.completed) // Sortiert erledigte nach unten
+                    .map((task) => (
+                        <ol key={task.id}>
+                            <button onClick={() => deleteTask(task.id)}>🗑️</button>
+                            <span 
+                                onClick={() => toggleTask(task.id, task.completed)} 
+                                className={task.completed ? "completed" : ""}
+                            >
                                 {task.title}
                             </span>
-                            <button onClick={() => deleteTask(task.id)}>Löschen</button>
-                        </li>
+                            {task.completed ? " ✔️" : ""}
+                        </ol>
                     ))}
             </ul>
         </div>
     );
+
 };
 
 export default TaskList;
