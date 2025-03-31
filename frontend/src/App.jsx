@@ -36,14 +36,23 @@ const TaskList = () => {
 
     // ✔️ Aufgabe als erledigt markieren
     const toggleTask = async (id, completed, title) => {
-        await fetch(`${API_URL}/${id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ title, completed: !completed }), // ✅ sendet auch den Titel
-        });
-        
-        setTasks(tasks.map((task) => (task.id === id ? { ...task, completed: !completed } : task)));
+        try {
+            // Sofortige visuelle Aktualisierung (lokal)
+            setTasks(tasks.map(task =>
+                task.id === id ? { ...task, completed: !completed } : task
+            ));
+    
+            // Speichere den neuen Status in der Datenbank (API-Aufruf)
+            await fetch(`${API_URL}/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ title, completed: !completed }), // Status umkehren
+            });
+        } catch (error) {
+            console.error("Fehler beim Aktualisieren:", error);
+        }
     };
+    
     
 
     // 🗑️ Aufgabe löschen
