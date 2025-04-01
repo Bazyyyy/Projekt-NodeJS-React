@@ -20,9 +20,9 @@ db.run(`
     CREATE TABLE IF NOT EXISTS tasks (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
-        completed BOOLEAN NOT NULL DEFAULT 0
+        completed BOOLEAN NOT NULL DEFAULT 0,
+        list_id INTEGER
     )
-        ALTER TABLE tasks ADD COLUMN list_id INTEGER;
 `);
 
 app.get("/lists", (req, res) => {
