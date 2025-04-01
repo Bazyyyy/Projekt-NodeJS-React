@@ -35,15 +35,14 @@ const TaskList = () => {
     };
 
     // ✔️ Aufgabe als erledigt markieren
-    const toggleTask = async (id, completed, title) => {
-        await fetch(`${API_URL}/${id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ title, completed: !completed }), // ✅ sendet auch den Titel
-        });
-        
-        setTasks(tasks.map((task) => (task.id === id ? { ...task, completed: !completed } : task)));
-    };
+    const toggleTask = (id, completed) => {
+        fetch(`http://localhost:5000/tasks/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ completed: !completed }),
+        }).then(() => setTasks(tasks.map(t => t.id === id ? { ...t, completed: !completed } : t)));
+      };
+    
     
 
     // 🗑️ Aufgabe löschen
