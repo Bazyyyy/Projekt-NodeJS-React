@@ -27,18 +27,35 @@ const TaskList = () => {
     };
 
     useEffect(() => {
-        fetchTasks();
-    }, []);
+        if (!selectedListId) return;
+    
+        fetch(`${API_URL}/${selectedListId}`)
+            .then((res) => res.json())
+            .then((data) => {
+                setTasks(data.map(task => ({
+                    ...task,
+                    completed: task.completed === 1 // SQLite gibt 1/0 zurück
+                })));
+            })
+            .catch((err) => console.error("Fehler beim Laden der Aufgaben:", err));
+    }, [selectedListId]); // Lädt Aufgaben neu, wenn eine andere Liste gewählt wird
+    
 
     // Neue Aufgabe hinzufügen
-    const addTask = async (title) => {
-        try {
-            const res = await axios.post(API_URL, { title });
-            setTasks([...tasks, res.data]);
-        } catch (error) {
-            console.error("Fehler beim Hinzufügen:", error);
-        }
+    const addTask = async () => {
+        if (!newTask.trim()) return;
+    
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ title: newTask, list_id: selectedListId }),
+        });
+    
+        const task = await response.json();
+        setTasks([...tasks, task]); // Aufgabe zur Liste hinzufügen
+        setNewTask("");
     };
+    
 
     // Aufgabe aktualisieren (toggle completed)
     const toggleTask = async (id, completed) => {

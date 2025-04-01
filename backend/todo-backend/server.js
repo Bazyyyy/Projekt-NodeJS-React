@@ -22,7 +22,15 @@ db.run(`
         title TEXT NOT NULL,
         completed BOOLEAN NOT NULL DEFAULT 0
     )
+        ALTER TABLE tasks ADD COLUMN list_id INTEGER;
 `);
+
+app.get("/lists", (req, res) => {
+    db.all("SELECT * FROM lists", [], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows);
+    });
+});
 
 // Alle Aufgaben abrufen
 app.get("/tasks", (req, res) => {
@@ -35,6 +43,16 @@ app.get("/tasks", (req, res) => {
         }));
 
         res.json(tasks);
+    });
+});
+
+app.post("/lists", (req, res) => {
+    const { title } = req.body;
+    if (!title) return res.status(400).json({ error: "Title is required" });
+
+    db.run("INSERT INTO lists (title) VALUES (?)", [title], function (err) {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ id: this.lastID, title });
     });
 });
 
