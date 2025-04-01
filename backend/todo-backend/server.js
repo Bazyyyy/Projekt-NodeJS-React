@@ -20,9 +20,17 @@ db.run(`
     CREATE TABLE IF NOT EXISTS tasks (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
-        completed BOOLEAN NOT NULL DEFAULT 0
+        completed BOOLEAN NOT NULL DEFAULT 0,
+        list_id INTEGER
     )
 `);
+
+app.get("/lists", (req, res) => {
+    db.all("SELECT * FROM lists", [], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows);
+    });
+});
 
 // Alle Aufgaben abrufen
 app.get("/tasks", (req, res) => {
@@ -35,6 +43,16 @@ app.get("/tasks", (req, res) => {
         }));
 
         res.json(tasks);
+    });
+});
+
+app.post("/lists", (req, res) => {
+    const { title } = req.body;
+    if (!title) return res.status(400).json({ error: "Title is required" });
+
+    db.run("INSERT INTO lists (title) VALUES (?)", [title], function (err) {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ id: this.lastID, title });
     });
 });
 
@@ -51,8 +69,18 @@ app.post("/tasks", (req, res) => {
 
 // Aufgabe aktualisieren (Titel und/oder completed-Status)
 app.put("/tasks/:id", (req, res) => {
-    db.run("UPDATE tasks SET completed = ? WHERE id = ?", [req.body.completed, req.params.id], () => res.json({ message: "Task updated" }));
-  });
+    const { id } = req.params;
+    const { title, completed } = req.body;
+
+    db.run(
+        "UPDATE tasks SET title = ?, completed = ? WHERE id = ?", 
+        [title, completed ? 1 : 0, id], // Konvertiere `true` → `1`
+        function (err) {
+            if (err) return res.status(500).json({ error: err.message });
+            res.json({ id, title, completed });
+        }
+    );
+});
 
 // Aufgabe löschen
 app.delete("/tasks/:id", (req, res) => {
