@@ -69,8 +69,18 @@ app.post("/tasks", (req, res) => {
 
 // Aufgabe aktualisieren (Titel und/oder completed-Status)
 app.put("/tasks/:id", (req, res) => {
-    db.run("UPDATE tasks SET completed = ? WHERE id = ?", [req.body.completed, req.params.id], () => res.json({ message: "Task updated" }));
-  });
+    const { id } = req.params;
+    const { title, completed } = req.body;
+
+    db.run(
+        "UPDATE tasks SET title = ?, completed = ? WHERE id = ?", 
+        [title, completed ? 1 : 0, id], // Konvertiere `true` → `1`
+        function (err) {
+            if (err) return res.status(500).json({ error: err.message });
+            res.json({ id, title, completed });
+        }
+    );
+});
 
 // Aufgabe löschen
 app.delete("/tasks/:id", (req, res) => {
