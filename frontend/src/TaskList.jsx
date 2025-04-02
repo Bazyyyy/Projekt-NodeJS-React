@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import TaskItem from "./TaskItem";
+import TaskForm from "./TaskForm";
 import styles from "./TaskList.module.css";
 
 const TaskList = ({ listId }) => {
@@ -16,10 +18,9 @@ const TaskList = ({ listId }) => {
                     throw new Error(`Failed to fetch tasks: ${response.statusText}`);
                 }
                 const data = await response.json();
-                setTasks(Array.isArray(data) ? data : []); // Ensure tasks is always an array
+                setTasks(data);
             } catch (err) {
                 console.error("Error fetching tasks:", err);
-                setTasks([]); // Fallback to an empty array on error
             }
         };
 
@@ -42,8 +43,8 @@ const TaskList = ({ listId }) => {
             }
 
             const task = await response.json();
-            setTasks((prevTasks) => [...prevTasks, task]); // Append the new task to the existing tasks
-            setNewTask(""); // Clear the input field
+            setTasks([...tasks, task]);
+            setNewTask("");
         } catch (err) {
             console.error("Error adding task:", err);
         }
@@ -60,7 +61,7 @@ const TaskList = ({ listId }) => {
                 throw new Error(`Failed to delete task: ${response.statusText}`);
             }
 
-            setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId)); // Remove the task from the state
+            setTasks(tasks.filter((task) => task.id !== taskId));
         } catch (err) {
             console.error("Error deleting task:", err);
         }
@@ -77,16 +78,12 @@ const TaskList = ({ listId }) => {
             />
             <button onClick={addTask}>Add Task</button>
             <ul>
-                {Array.isArray(tasks) && tasks.length > 0 ? (
-                    tasks.map((task) => (
-                        <li key={task.id} className={styles.taskItem}>
-                            {task.title}
-                            <button onClick={() => deleteTask(task.id)}>Delete</button>
-                        </li>
-                    ))
-                ) : (
-                    <p>No tasks yet. Add a new task above.</p>
-                )}
+                {tasks.map((task) => (
+                    <li key={task.id} className={styles.taskItem}>
+                        {task.title}
+                        <button onClick={() => deleteTask(task.id)}>Delete</button>
+                    </li>
+                ))}
             </ul>
         </div>
     );
