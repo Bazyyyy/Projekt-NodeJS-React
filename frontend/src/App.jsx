@@ -1,104 +1,168 @@
 import { useState, useEffect } from "react";
 
-const API_URL = "http://localhost:5000/tasks"; // Verbindung zum Backend
+const API_URL = "http://localhost:5000";
 
-const TaskList = () => {
-    const [tasks, setTasks] = useState([]); // To-Do-Liste
-    const [newTask, setNewTask] = useState(""); // Eingabefeld
+const App = () => {
+    const [lists, setLists] = useState([]);
+    const [selectedListId, setSelectedListId] = useState(null);
+    const [tasks, setTasks] = useState([]);
+    const [newTask, setNewTask] = useState("");
+    const [newListName, setNewListName] = useState("");
+    const [newListType, setNewListType] = useState("");
 
-    // 🔄 Lade Aufgaben beim Start
     useEffect(() => {
-        fetch(API_URL)
+        fetch(`${API_URL}/lists`)
             .then((res) => res.json())
-            .then((data) => {
-                const updatedTasks = data.map(task => ({
-                    ...task,
-                    completed: task.completed === 1 // Wenn completed 1 ist, setze es auf true
-                }));
-                setTasks(updatedTasks); // Setzt die Aufgaben mit dem richtigen Status
-            })
-            .catch((err) => console.error("Fehler beim Laden der Aufgaben:", err));
+            .then((data) => setLists(data))
+            .catch((err) => console.error("Error fetching lists:", err));
     }, []);
-    
 
-    // ➕ Neue Aufgabe hinzufügen
-    const addTask = async () => {
-        if (!newTask.trim()) return;
-        const response = await fetch(API_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ title: newTask }),
-        });
-        const task = await response.json();
-        setTasks([...tasks, task]); // Neue Aufgabe zur Liste hinzufügen
-        setNewTask(""); // Eingabefeld leeren
-    };
+    useEffect(() => {
+        if (!selectedListId) return;
 
-    // ✔️ Aufgabe als erledigt markieren
-    const toggleTask = async (id, completed, title) => {
-        try {
-            // Sofortige visuelle Aktualisierung (lokal)
-            setTasks(tasks.map(task =>
-                task.id === id ? { ...task, completed: !completed } : task
-            ));
-    
-            // Speichere den neuen Status in der Datenbank (API-Aufruf)
-            await fetch(`${API_URL}/${id}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ title, completed: !completed }), // Status umkehren
+        fetch(`${API_URL}/lists/${selectedListId}/tasks`)
+            .then((res) => res.json())
+            .then((data) => setTasks(data))
+            .catch((err) => {
+                console.error("Error fetching tasks:", err);
+                setTasks([]);
             });
-        } catch (error) {
-            console.error("Fehler beim Aktualisieren:", error);
+    }, [selectedListId]);
+
+    const addList = async () => {
+        const title = newListName.trim();
+        const type = newListType.trim();
+        if (!title) return alert("Bitte gib einen Listennamen ein.");
+
+        console.log("Sende:", { title, type });
+
+        try {
+            const response = await fetch(`${API_URL}/lists`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ title, type }),
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error || "Fehler beim Erstellen der Liste");
+            }
+
+            const list = await response.json();
+            setLists([...lists, list]);
+            setNewListName("");
+            setNewListType("");
+            setSelectedListId(list.id);
+        } catch (err) {
+            console.error("Fehler beim Hinzufügen der Liste:", err);
         }
     };
-    
-    
 
-    // 🗑️ Aufgabe löschen
-    const deleteTask = async (id) => {
-        await fetch(`${API_URL}/${id}`, { method: "DELETE" });
-        setTasks(tasks.filter((task) => task.id !== id));
+    const addTask = async () => {
+        const title = newTask.trim();
+        if (!title || !selectedListId) return;
+
+        try {
+            const response = await fetch(`${API_URL}/lists/${selectedListId}/tasks`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ title }),
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error || "Fehler beim Erstellen der Aufgabe");
+            }
+
+            const task = await response.json();
+            setTasks([...tasks, task]);
+            setNewTask("");
+        } catch (err) {
+            console.error("Fehler beim Hinzufügen der Aufgabe:", err);
+        }
     };
 
-    // Funktion zur Behandlung von Tastendruckereignissen
-    const handleKeyPress = (event) => {
-        if (event.key === "Enter") {
-            addTask();
+    const deleteList = async (listId) => {
+        try {
+            await fetch(`${API_URL}/lists/${listId}`, {
+                method: "DELETE",
+            });
+            setLists(lists.filter((list) => list.id !== listId));
+            if (selectedListId === listId) {
+                setSelectedListId(null);
+                setTasks([]);
+            }
+        } catch (err) {
+            console.error("Fehler beim Löschen der Liste:", err);
         }
     };
 
     return (
-        <div className="container">
-            <h1>Meine ToDo-Liste</h1>
-            <input
-                value={newTask}
-                onChange={(e) => setNewTask(e.target.value)}
-                onKeyPress={handleKeyPress} // onKeyPress-Ereignis hinzufügen
-                placeholder="Neue Aufgabe..."
-            />
-            <button onClick={addTask}>Hinzufügen</button>
-    
-            <ul>
-                {tasks
-                    .slice() // Erstellt eine Kopie, damit das Original unverändert bleibt
-                    .sort((a, b) => a.completed - b.completed) // Sortiert erledigte nach unten
-                    .map((task) => (
-                        <ol key={task.id}>
-                            <button onClick={() => deleteTask(task.id)}>🗑️</button>
-                            <span 
-                                onClick={() => toggleTask(task.id, task.completed)} 
-                                className={task.completed ? "completed" : ""}
-                            >
-                                {task.title}
-                            </span>
-                            {task.completed ? " ✔️" : ""}
-                        </ol>
-                    ))}
-            </ul>
+        <div>
+            <h1>To-Do Lists</h1>
+            <div>
+                <input
+                    value={newListName}
+                    onChange={(e) => setNewListName(e.target.value)}
+                    placeholder="Neue Liste"
+                />
+                <input
+                    value={newListType}
+                    onChange={(e) => setNewListType(e.target.value)}
+                    placeholder="Typ (z. B. Arbeit, Einkauf)"
+                />
+                <button onClick={addList}>Add List</button>
+            </div>
+            <div>
+                {lists.map((list) => (
+                    <div key={list.id} style={{ display: "flex", alignItems: "center", marginBottom: "5px" }}>
+                        <button
+                            onClick={() => setSelectedListId(list.id)}
+                            style={{
+                                backgroundColor: selectedListId === list.id ? "lightblue" : "white",
+                                marginRight: "10px",
+                                color: "black"
+                            }}
+                        >
+                            {list.title || "(Ohne Titel)"} <small style={{ marginLeft: 5, color: "gray" }}>({list.type || "Allgemein"})</small>
+                        </button>
+                        <button
+                            onClick={() => deleteList(list.id)}
+                            style={{
+                                backgroundColor: "red",
+                                color: "white",
+                                border: "none",
+                                padding: "5px 10px",
+                                cursor: "pointer",
+                            }}
+                        >
+                            Delete
+                        </button>
+                    </div>
+                ))}
+            </div>
+            {selectedListId && (
+                <div>
+                    <h2>Tasks</h2>
+                    <input
+                        value={newTask}
+                        onChange={(e) => setNewTask(e.target.value)}
+                        placeholder="Neue Aufgabe"
+                    />
+                    <button onClick={addTask}>Add Task</button>
+                    {tasks.length === 0 ? (
+                        <p>No tasks yet. Add a new task above.</p>
+                    ) : (
+                        <ul>
+                            {tasks.map((task) => (
+                                <li key={task.id}>{task.title} {task.completed ? "✔️" : ""}</li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
+            )}
         </div>
     );
-
 };
 
-export default TaskList;
+export default App;
