@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import TaskItem from './TaskItem'; // Passe den Pfad an
-
-
+import ListSelection from "./ListSelection";
+import TaskForm from "./TaskForm";
+import TaskList from "./TaskList";
 
 const API_URL = "http://localhost:5000";
 
@@ -37,8 +37,6 @@ const App = () => {
         const type = newListType.trim();
         if (!title) return alert("Bitte gib einen Listennamen ein.");
 
-        console.log("Sende:", { title, type });
-
         try {
             const response = await fetch(`${API_URL}/lists`, {
                 method: "POST",
@@ -58,6 +56,19 @@ const App = () => {
             setSelectedListId(list.id);
         } catch (err) {
             console.error("Fehler beim Hinzufügen der Liste:", err);
+        }
+    };
+
+    const deleteList = async (listId) => {
+        try {
+            await fetch(`${API_URL}/lists/${listId}`, { method: "DELETE" });
+            setLists(lists.filter((list) => list.id !== listId));
+            if (selectedListId === listId) {
+                setSelectedListId(null);
+                setTasks([]);
+            }
+        } catch (err) {
+            console.error("Fehler beim Löschen der Liste:", err);
         }
     };
 
@@ -102,68 +113,38 @@ const App = () => {
         }
     };
 
-    
-
-    const deleteList = async (listId) => {
+    const deleteTask = async (taskId) => {
         try {
-            await fetch(`${API_URL}/lists/${listId}`, {
-                method: "DELETE",
-            });
-            setLists(lists.filter((list) => list.id !== listId));
-            if (selectedListId === listId) {
-                setSelectedListId(null);
-                setTasks([]);
-            }
+            await fetch(`${API_URL}/tasks/${taskId}`, { method: "DELETE" });
+            setTasks(tasks.filter(t => t.id !== taskId));
         } catch (err) {
-            console.error("Fehler beim Löschen der Liste:", err);
+            console.error("Fehler beim Löschen des Tasks:", err);
         }
     };
 
     return (
         <div>
             <h1>To-Do Lists</h1>
-            <div>
-                <input
-                    value={newListName}
-                    onChange={(e) => setNewListName(e.target.value)}
-                    placeholder="Neue Liste"
-                />
-                <input
-                    value={newListType}
-                    onChange={(e) => setNewListType(e.target.value)}
-                    placeholder="Typ (z. B. Arbeit, Einkauf)"
-                />
-                <button onClick={addList}>Add List</button>
-            </div>
-            <div>
-                {lists.map((list) => (
-                    <div key={list.id} style={{ display: "flex", alignItems: "center", marginBottom: "5px" }}>
-                        <button
-                            onClick={() => setSelectedListId(list.id)}
-                            style={{
-                                backgroundColor: selectedListId === list.id ? "lightblue" : "white",
-                                marginRight: "10px",
-                                color: "black"
-                            }}
-                        >
-                            {list.title || "(Ohne Titel)"} <small style={{ marginLeft: 5, color: "gray" }}>({list.type || "Allgemein"})</small>
-                        </button>
-                        <button
-                            onClick={() => deleteList(list.id)}
-                            style={{
-                                backgroundColor: "red",
-                                color: "white",
-                                border: "none",
-                                padding: "5px 10px",
-                                cursor: "pointer",
-                            }}
-                        >
-                            Delete
-                        </button>
-                    </div>
-                ))}
-            </div>
-           
+
+            <ListSelection
+                lists={lists}
+                selectedListId={selectedListId}
+                setSelectedListId={setSelectedListId}
+                newListName={newListName}
+                setNewListName={setNewListName}
+                newListType={newListType}
+                setNewListType={setNewListType}
+                addList={addList}
+                deleteList={deleteList}
+            />
+
+            {selectedListId && (
+                <div>
+                    <h2>Tasks</h2>
+                    <TaskForm newTask={newTask} setNewTask={setNewTask} addTask={addTask} />
+                    <TaskList tasks={tasks} toggleTaskDone={toggleTaskDone} deleteTask={deleteTask} />
+                </div>
+            )}
         </div>
     );
 };
