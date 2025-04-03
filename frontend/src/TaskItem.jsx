@@ -1,5 +1,15 @@
 const TaskItem = ({ task, toggleTaskDone, deleteTask }) => {
-  const isOverdue = task.deadline && new Date(task.deadline) < new Date() && !task.completed;
+  const today = new Date();
+  const deadlineDate = task.deadline ? new Date(task.deadline) : null;
+
+  const isOverdue = deadlineDate && deadlineDate < today && !task.completed;
+  const isSoon = deadlineDate && deadlineDate >= today && (deadlineDate - today) / (1000 * 60 * 60 * 24) < 3 && !task.completed;
+
+  const getDeadlineStyle = () => {
+      if (isOverdue) return { color: "red" };
+      if (isSoon) return { color: "orange" };
+      return { color: "#666" };
+  };
 
   return (
       <li style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '4px', marginBottom: '10px' }}>
@@ -20,8 +30,10 @@ const TaskItem = ({ task, toggleTaskDone, deleteTask }) => {
               </button>
           </div>
           {task.deadline && (
-              <small style={{ marginLeft: '26px', color: isOverdue ? 'red' : '#666' }}>
-                  📅 Deadline: {task.deadline} {isOverdue ? '⏰ Überfällig!' : ''}
+              <small style={{ marginLeft: '26px', ...getDeadlineStyle() }}>
+                  📅 Deadline: {task.deadline}
+                  {isOverdue && ' ⏰ Überfällig!'}
+                  {isSoon && ' ⚠️ bald fällig'}
               </small>
           )}
       </li>

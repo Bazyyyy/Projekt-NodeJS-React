@@ -26,7 +26,9 @@ const App = () => {
 
         fetch(`${API_URL}/lists/${selectedListId}/tasks`)
             .then((res) => res.json())
-            .then((data) => setTasks(data))
+            .then((data) => {
+                setTasks(data);
+            })
             .catch((err) => {
                 console.error("Error fetching tasks:", err);
                 setTasks([]);
@@ -124,6 +126,10 @@ const App = () => {
         }
     };
 
+    const totalTasks = tasks.length;
+    const completedTasks = tasks.filter(t => t.completed).length;
+    const progress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+
     return (
         <div>
             <h1>To-Do Lists</h1>
@@ -143,6 +149,23 @@ const App = () => {
             {selectedListId && (
                 <div>
                     <h2>Tasks</h2>
+                    {totalTasks > 0 && (
+                        <div style={{ marginBottom: '1rem' }}>
+                            <div style={{ background: '#eee', height: '10px', width: '100%', borderRadius: '5px' }}>
+                                <div
+                                    style={{
+                                        width: `${progress}%`,
+                                        background: progress === 100 ? 'green' : 'orange',
+                                        height: '100%',
+                                        borderRadius: '5px',
+                                        transition: 'width 0.3s ease'
+                                    }}
+                                ></div>
+                            </div>
+                            <small style={{ color: '#555' }}>✔ {completedTasks} / {totalTasks} erledigt</small>
+                        </div>
+                    )}
+
                     <TaskForm
                         newTask={newTask}
                         setNewTask={setNewTask}
