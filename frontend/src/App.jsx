@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import TaskItem from './TaskItem'; // Passe den Pfad an
+
+
 
 const API_URL = "http://localhost:5000";
 
@@ -99,14 +102,7 @@ const App = () => {
         }
     };
 
-    const deleteTask = async (taskId) => {
-        try {
-            await fetch(`${API_URL}/tasks/${taskId}`, { method: "DELETE" });
-            setTasks(tasks.filter(t => t.id !== taskId));
-        } catch (err) {
-            console.error("Fehler beim Löschen des Tasks:", err);
-        }
-    };
+    
 
     const deleteList = async (listId) => {
         try {
@@ -167,41 +163,7 @@ const App = () => {
                     </div>
                 ))}
             </div>
-            {selectedListId && (
-                <div>
-                    <h2>Tasks</h2>
-                    <input
-                        value={newTask}
-                        onChange={(e) => setNewTask(e.target.value)}
-                        placeholder="Neue Aufgabe"
-                    />
-                    <button onClick={addTask}>Add Task</button>
-                    {tasks.length === 0 ? (
-                        <p>No tasks yet. Add a new task above.</p>
-                    ) : (
-                        <ul>
-                            {tasks.map((task) => (
-                                <li key={task.id} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                    <input
-                                        type="checkbox"
-                                        checked={task.completed}
-                                        onChange={() => toggleTaskDone(task.id, task.completed)}
-                                    />
-                                    <span style={{ textDecoration: task.completed ? "line-through" : "none" }}>
-                                        {task.title}
-                                    </span>
-                                    <button
-                                        onClick={() => deleteTask(task.id)}
-                                        style={{ backgroundColor: 'red', color: 'white', border: 'none', cursor: 'pointer' }}
-                                    >
-                                        🗑️
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-                </div>
-            )}
+           
         </div>
     );
 };
