@@ -103,6 +103,22 @@ app.post("/lists/:listId/tasks", (req, res) => {
     );
 });
 
+app.put("/tasks/:id", (req, res) => {
+    const { id } = req.params;
+    const { completed } = req.body;
+
+    const status = completed ? 1 : 0;
+
+    db.run("UPDATE tasks SET completed = ? WHERE id = ?", [status, id], function (err) {
+        if (err) return res.status(500).json({ error: err.message });
+
+        db.get("SELECT * FROM tasks WHERE id = ?", [id], (err, row) => {
+            if (err) return res.status(500).json({ error: err.message });
+            res.json({ ...row, completed: row.completed === 1 });
+        });
+    });
+});
+
 app.delete("/tasks/:id", (req, res) => {
     const { id } = req.params;
     db.run("DELETE FROM tasks WHERE id = ?", id, function (err) {

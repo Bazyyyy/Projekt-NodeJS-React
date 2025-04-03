@@ -82,6 +82,32 @@ const App = () => {
         }
     };
 
+    const toggleTaskDone = async (taskId, currentStatus) => {
+        try {
+            const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ completed: !currentStatus }),
+            });
+
+            if (!response.ok) throw new Error("Fehler beim Aktualisieren des Status");
+
+            const updated = await response.json();
+            setTasks(tasks.map(t => t.id === taskId ? updated : t));
+        } catch (err) {
+            console.error("Fehler beim Umschalten des Task-Status:", err);
+        }
+    };
+
+    const deleteTask = async (taskId) => {
+        try {
+            await fetch(`${API_URL}/tasks/${taskId}`, { method: "DELETE" });
+            setTasks(tasks.filter(t => t.id !== taskId));
+        } catch (err) {
+            console.error("Fehler beim Löschen des Tasks:", err);
+        }
+    };
+
     const deleteList = async (listId) => {
         try {
             await fetch(`${API_URL}/lists/${listId}`, {
@@ -155,7 +181,22 @@ const App = () => {
                     ) : (
                         <ul>
                             {tasks.map((task) => (
-                                <li key={task.id}>{task.title} {task.completed ? "✔️" : ""}</li>
+                                <li key={task.id} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    <input
+                                        type="checkbox"
+                                        checked={task.completed}
+                                        onChange={() => toggleTaskDone(task.id, task.completed)}
+                                    />
+                                    <span style={{ textDecoration: task.completed ? "line-through" : "none" }}>
+                                        {task.title}
+                                    </span>
+                                    <button
+                                        onClick={() => deleteTask(task.id)}
+                                        style={{ backgroundColor: 'red', color: 'white', border: 'none', cursor: 'pointer' }}
+                                    >
+                                        🗑️
+                                    </button>
+                                </li>
                             ))}
                         </ul>
                     )}
