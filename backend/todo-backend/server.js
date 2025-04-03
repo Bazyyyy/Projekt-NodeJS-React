@@ -13,6 +13,13 @@ const db = new sqlite3.Database("./todo.db", (err) => {
     console.log("Connected to SQLite database.");
 });
 
+// Optional: Versuche Spalte hinzuzufügen (ignoriert Fehler, wenn sie schon existiert)
+db.run("ALTER TABLE tasks ADD COLUMN deadline TEXT", (err) => {
+    if (err && !err.message.includes("duplicate column")) {
+        console.error("Fehler beim Hinzufügen der Spalte deadline:", err.message);
+    }
+});
+
 db.run(`
     CREATE TABLE IF NOT EXISTS lists (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -27,6 +34,7 @@ db.run(`
         title TEXT NOT NULL,
         completed BOOLEAN NOT NULL DEFAULT 0,
         list_id INTEGER NOT NULL,
+        deadline TEXT,
         FOREIGN KEY (list_id) REFERENCES lists (id) ON DELETE CASCADE
     )
 `);
@@ -41,8 +49,6 @@ app.get("/lists", (req, res) => {
 app.post("/lists", (req, res) => {
     const { title, type } = req.body;
 
-    console.log("Empfangen:", req.body);
-
     if (!title || typeof title !== "string" || title.trim() === "") {
         return res.status(400).json({ error: "Gültiger Title ist erforderlich!" });
     }
@@ -54,17 +60,10 @@ app.post("/lists", (req, res) => {
         "INSERT INTO lists (title, type) VALUES (?, ?)",
         [cleanTitle, cleanType],
         function (err) {
-            if (err) {
-                console.error("Fehler beim INSERT:", err.message);
-                return res.status(500).json({ error: err.message });
-            }
+            if (err) return res.status(500).json({ error: err.message });
 
             db.get("SELECT * FROM lists WHERE id = ?", [this.lastID], (err, row) => {
-                if (err) {
-                    console.error("Fehler beim SELECT:", err.message);
-                    return res.status(500).json({ error: err.message });
-                }
-
+                if (err) return res.status(500).json({ error: err.message });
                 res.json(row);
             });
         }
@@ -85,20 +84,21 @@ app.get("/lists/:listId/tasks", (req, res) => {
 
 app.post("/lists/:listId/tasks", (req, res) => {
     const { listId } = req.params;
-    const { title } = req.body;
+    const { title, deadline } = req.body;
 
     if (!title || typeof title !== "string" || title.trim() === "") {
         return res.status(400).json({ error: "Gültiger Task-Titel ist erforderlich!" });
     }
 
     const cleanTitle = title.trim();
+    const cleanDeadline = deadline || null;
 
     db.run(
-        "INSERT INTO tasks (title, completed, list_id) VALUES (?, ?, ?)",
-        [cleanTitle, false, listId],
+        "INSERT INTO tasks (title, completed, list_id, deadline) VALUES (?, ?, ?, ?)",
+        [cleanTitle, false, listId, cleanDeadline],
         function (err) {
             if (err) return res.status(500).json({ error: err.message });
-            res.json({ id: this.lastID, title: cleanTitle, completed: false, list_id: listId });
+            res.json({ id: this.lastID, title: cleanTitle, completed: false, list_id: listId, deadline: cleanDeadline });
         }
     );
 });

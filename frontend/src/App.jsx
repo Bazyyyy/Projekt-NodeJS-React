@@ -10,6 +10,7 @@ const App = () => {
     const [selectedListId, setSelectedListId] = useState(null);
     const [tasks, setTasks] = useState([]);
     const [newTask, setNewTask] = useState("");
+    const [newDeadline, setNewDeadline] = useState("");
     const [newListName, setNewListName] = useState("");
     const [newListType, setNewListType] = useState("");
 
@@ -80,7 +81,7 @@ const App = () => {
             const response = await fetch(`${API_URL}/lists/${selectedListId}/tasks`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ title }),
+                body: JSON.stringify({ title, deadline: newDeadline }),
             });
 
             if (!response.ok) {
@@ -91,6 +92,7 @@ const App = () => {
             const task = await response.json();
             setTasks([...tasks, task]);
             setNewTask("");
+            setNewDeadline("");
         } catch (err) {
             console.error("Fehler beim Hinzufügen der Aufgabe:", err);
         }
@@ -141,8 +143,18 @@ const App = () => {
             {selectedListId && (
                 <div>
                     <h2>Tasks</h2>
-                    <TaskForm newTask={newTask} setNewTask={setNewTask} addTask={addTask} />
-                    <TaskList tasks={tasks} toggleTaskDone={toggleTaskDone} deleteTask={deleteTask} />
+                    <TaskForm
+                        newTask={newTask}
+                        setNewTask={setNewTask}
+                        newDeadline={newDeadline}
+                        setNewDeadline={setNewDeadline}
+                        addTask={addTask}
+                    />
+                    <TaskList
+                        tasks={tasks}
+                        toggleTaskDone={toggleTaskDone}
+                        deleteTask={deleteTask}
+                    />
                 </div>
             )}
         </div>
