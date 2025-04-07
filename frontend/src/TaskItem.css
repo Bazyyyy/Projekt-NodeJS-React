@@ -1,0 +1,65 @@
+/* Container für die gesamte Task */
+.task-item {
+  background: #fff;
+  margin: 8px 0;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%; /* Passt die Breite an den Container an */
+  box-sizing: border-box; /* Bezieht Padding in die Breite ein */
+}
+
+/* Container für die Checkbox, den Titel und den Button */
+.task-item-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Verteilt die Elemente: links und rechts */
+  width: 100%; /* Nimmt die gesamte Breite ein */
+}
+
+/* Container für Checkbox und Titel */
+.task-item-left {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Abstand zwischen Checkbox und Titel */
+}
+
+/* Stil für den Titel der Aufgabe */
+.task-item-title {
+  text-decoration: none;
+}
+
+.task-item-title.completed {
+  text-decoration: line-through;
+}
+
+/* Stil für den Lösch-Button */
+.task-item-delete-button {
+  background-color: red;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.task-item-delete-button:hover {
+  background-color: darkred;
+}
+
+/* Stil für die Deadline */
+.task-item-deadline {
+  margin-left: 26px;
+  color: #666;
+}
+
+.task-item-deadline.overdue {
+  color: red;
+}
+
+.task-item-deadline.soon {
+  color: orange;
+}

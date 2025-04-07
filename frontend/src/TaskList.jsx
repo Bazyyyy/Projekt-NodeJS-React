@@ -2,7 +2,7 @@ import TaskItem from "./TaskItem";
 
 const TaskList = ({ tasks, toggleTaskDone, deleteTask }) => {
     if (tasks.length === 0) {
-        return <p>No tasks yet. Add a new task above.</p>;
+        return <p>Noch keine Aufgaben vorhanden.</p>;
     }
 
     return (

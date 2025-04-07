@@ -1,3 +1,5 @@
+import "./ListSelection.css";
+
 const ListSelection = ({
     lists,
     selectedListId,
@@ -9,67 +11,61 @@ const ListSelection = ({
     addList,
     deleteList,
 }) => {
-    const listTypes = ["Einkaufsliste", "Wochen ToDo´s", "Einfach ToDo´s"];
+    const listTypes = ["Einkaufsliste", "Wochen To Do Liste", "Einfache To Do Liste"];
 
-    // Funktion, die prüft, ob die Enter-Taste gedrückt wurde
     const handleKeyDown = (e) => {
         if (e.key === "Enter") {
             handleAddList();
         }
     };
 
-    // Funktion zum Hinzufügen der Liste, nur wenn der Typ ausgewählt wurde
     const handleAddList = () => {
-        if (!newListType) {
-            alert("Listentyp auswählen!"); // Warnung, wenn kein Typ ausgewählt wurde
-            return;
-        }
+        const defaultType = "Einfache To Do Liste";
+        const selectedType = newListType || defaultType;
+        setNewListType(selectedType);
         addList();
     };
 
     return (
-        <div>
+        <div className="list-selection-container">
             <input
+                className="list-selection-input"
                 value={newListName}
                 onChange={(e) => setNewListName(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="Neue Liste"
             />
             <select
+                className="list-selection-select"
                 value={newListType}
                 onChange={(e) => setNewListType(e.target.value)}
             >
-                <option value="" disabled>Liste auswählen</option>
+                <option value="" disabled>Listentyp auswählen</option>
                 {listTypes.map((type) => (
                     <option key={type} value={type}>{type}</option>
                 ))}
             </select>
-            <button onClick={handleAddList}>Add List</button>
+            <button
+                className="list-selection-add-button"
+                onClick={handleAddList}
+            >
+                Liste hinzufügen
+            </button>
 
             {lists.map((list) => (
-                <div key={list.id} style={{ display: "flex", alignItems: "center", marginBottom: "5px" }}>
+                <div key={list.id} className="list-selection-item">
                     <button
+                        className={`select-button ${
+                            selectedListId === list.id ? "selected" : ""
+                        }`}
                         onClick={() => setSelectedListId(list.id)}
-                        style={{
-                            backgroundColor: selectedListId === list.id ? "lightblue" : "white",
-                            marginRight: "10px",
-                            color: "black",
-                        }}
                     >
-                        {list.title || "(Ohne Titel)"} <small style={{ marginLeft: 5, color: "gray" }}>({list.type || "Allgemein"})</small>
+                        {list.title || "(Ohne Titel)"} <small style={{ marginLeft: 5, color: "gray" }}>({list.type || "Einfache To Do´s"})</small>
                     </button>
                     <button
+                        className="delete-button"
                         onClick={() => deleteList(list.id)}
-                        style={{
-                            backgroundColor: "red",
-                            color: "white",
-                            border: "none",
-                            padding: "5px 10px",
-                            cursor: "pointer",
-                        }}
-                    >
-                        Delete
-                    </button>
+                    >-</button>
                 </div>
             ))}
         </div>
