@@ -135,7 +135,7 @@ const App = () => {
 
     return (
         <div className="container">
-            <h1>To-Do Lists</h1>
+            <h1>To-Do</h1>
 
             {!selectedListId && (
                 <div className="list-selection">

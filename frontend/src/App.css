@@ -36,7 +36,7 @@ body {
 }
 
 .progress-bar-container {
-  margin-bottom: 1rem;
+  margin: 16px;
 }
 
 .progress-bar {
