@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import ListSelection from "./ListSelection";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
-
+import "./App.css"; // Importiere die CSS-Datei
 
 const API_URL = "http://localhost:5000";
 
@@ -132,38 +132,40 @@ const App = () => {
     const progress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
 
     return (
-        <div>
+        <div className="container">
             <h1>To-Do Lists</h1>
 
-            <ListSelection
-                lists={lists}
-                selectedListId={selectedListId}
-                setSelectedListId={setSelectedListId}
-                newListName={newListName}
-                setNewListName={setNewListName}
-                newListType={newListType}
-                setNewListType={setNewListType}
-                addList={addList}
-                deleteList={deleteList}
-            />
+            <div className="list-selection">
+                <ListSelection
+                    lists={lists}
+                    selectedListId={selectedListId}
+                    setSelectedListId={setSelectedListId}
+                    newListName={newListName}
+                    setNewListName={setNewListName}
+                    newListType={newListType}
+                    setNewListType={setNewListType}
+                    addList={addList}
+                    deleteList={deleteList}
+                />
+            </div>
 
             {selectedListId && (
-                <div>
+                <div className="task-list-container">
                     <h2>Tasks</h2>
                     {totalTasks > 0 && (
-                        <div style={{ marginBottom: '1rem' }}>
-                            <div style={{ background: '#eee', height: '10px', width: '100%', borderRadius: '5px' }}>
+                        <div className="progress-bar-container">
+                            <div className="progress-bar">
                                 <div
+                                    className="progress-bar-fill"
                                     style={{
                                         width: `${progress}%`,
-                                        background: progress === 100 ? 'green' : 'orange',
-                                        height: '100%',
-                                        borderRadius: '5px',
-                                        transition: 'width 0.3s ease'
+                                        background: progress === 100 ? "green" : "orange",
                                     }}
                                 ></div>
                             </div>
-                            <small style={{ color: '#555' }}>✔ {completedTasks} / {totalTasks} erledigt</small>
+                            <small className="progress-text">
+                                ✔ {completedTasks} / {totalTasks} erledigt
+                            </small>
                         </div>
                     )}
 
@@ -178,7 +180,7 @@ const App = () => {
                         tasks={tasks}
                         toggleTaskDone={toggleTaskDone}
                         deleteTask={deleteTask}
-                    />        
+                    />
                 </div>
             )}
         </div>
