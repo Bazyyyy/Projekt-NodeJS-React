@@ -14,7 +14,20 @@ const TaskItem = ({ task, toggleTaskDone, deleteTask }) => {
   return (
     <li className="task-item">
       <div className="task-item-content">
-        {/* Linker Bereich: Checkbox und Titel */}
+        {/* Linker Bereich: Deadline */}
+        {task.deadline && (
+          <small
+            className={`task-item-deadline ${
+              isOverdue ? "overdue" : isSoon ? "soon" : ""
+            }`}
+          >
+            Zu erledigen bis: {task.deadline}
+            {isOverdue && " ⏰ Überfällig!"}
+            {isSoon && " ⚠️ bald fällig"}
+          </small>
+        )}
+
+        {/* Mittlerer Bereich: Checkbox und Titel */}
         <div className="task-item-left">
           <input
             type="checkbox"
@@ -38,17 +51,6 @@ const TaskItem = ({ task, toggleTaskDone, deleteTask }) => {
           -
         </button>
       </div>
-      {task.deadline && (
-        <small
-          className={`task-item-deadline ${
-            isOverdue ? "overdue" : isSoon ? "soon" : ""
-          }`}
-        >
-          📅 Deadline: {task.deadline}
-          {isOverdue && " ⏰ Überfällig!"}
-          {isSoon && " ⚠️ bald fällig"}
-        </small>
-      )}
     </li>
   );
 };
