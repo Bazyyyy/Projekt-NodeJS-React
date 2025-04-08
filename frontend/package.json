@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "1.0.0",
   "type": "module",
+  "main": "electron.mjs",
   "scripts": {
     "dev": "vite",
     "electron": "electron .",
@@ -19,12 +20,5 @@
     "@vitejs/plugin-react": "^4.0.0",
     "electron": "^25.3.1",
     "vite": "^4.3.9"
-  },
-  "type": "module",
-"main": "electron.mjs",
-"scripts": {
-  "dev": "vite",
-  "electron": "electron ."
-}
-
+  }
 }
