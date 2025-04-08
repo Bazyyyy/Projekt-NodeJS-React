@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import ListSelection from "./ListSelection";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
-import "./App.css"; // Importiere die CSS-Datei
+import "./App.css";
 
 const API_URL = "http://localhost:5000";
 
@@ -38,7 +38,7 @@ const App = () => {
 
     const addList = async () => {
         const title = newListName.trim();
-        const type = newListType.trim();
+        const type = (newListType || "Einfache To Do Liste").trim();
         if (!title) return alert("Bitte gib einen Listennamen ein.");
 
         try {
@@ -131,27 +131,31 @@ const App = () => {
     const completedTasks = tasks.filter(t => t.completed).length;
     const progress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
 
+    const selectedList = lists.find((list) => list.id === selectedListId);
+
     return (
         <div className="container">
-            <h1>To-Do Lists</h1>
+            <h1>To-Do</h1>
 
-            <div className="list-selection">
-                <ListSelection
-                    lists={lists}
-                    selectedListId={selectedListId}
-                    setSelectedListId={setSelectedListId}
-                    newListName={newListName}
-                    setNewListName={setNewListName}
-                    newListType={newListType}
-                    setNewListType={setNewListType}
-                    addList={addList}
-                    deleteList={deleteList}
-                />
-            </div>
+            {!selectedListId && (
+                <div className="list-selection">
+                    <ListSelection
+                        lists={lists}
+                        selectedListId={selectedListId}
+                        setSelectedListId={setSelectedListId}
+                        newListName={newListName}
+                        setNewListName={setNewListName}
+                        newListType={newListType}
+                        setNewListType={setNewListType}
+                        addList={addList}
+                        deleteList={deleteList}
+                    />
+                </div>
+            )}
 
             {selectedListId && (
                 <div className="task-list-container">
-                    <h2>Tasks</h2>
+                    <h2>{selectedList?.title}</h2>
                     {totalTasks > 0 && (
                         <div className="progress-bar-container">
                             <div className="progress-bar">
@@ -181,6 +185,12 @@ const App = () => {
                         toggleTaskDone={toggleTaskDone}
                         deleteTask={deleteTask}
                     />
+                    <button
+                        onClick={() => setSelectedListId(null)}
+                        className="back-button"
+                    >
+                        Zurück zur Listenübersicht
+                    </button>
                 </div>
             )}
         </div>

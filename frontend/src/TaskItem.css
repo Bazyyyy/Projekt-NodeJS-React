@@ -1,0 +1,100 @@
+/* Container für die gesamte Task */
+.task-item {
+  background: #fff;
+  margin: 8px 0;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%; /* Passt die Breite an den Container an */
+  box-sizing: border-box; /* Bezieht Padding in die Breite ein */
+}
+
+/* Container für die Checkbox, den Titel und den Button */
+.task-item-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Verteilt die Elemente: links und rechts */
+  width: 100%;
+   /* Nimmt die gesamte Breite ein */
+}
+
+/* Container für Checkbox und Titel */
+.task-item-left {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Abstand zwischen Checkbox und Titel */
+}
+
+/* Stil für die Checkbox */
+.task-item-left input[type="checkbox"] {
+  width: 20px; /* Breite der Checkbox */
+  height: 20px; /* Höhe der Checkbox */
+  border-radius: 50%; /* Macht die Checkbox rund */
+  border: 2px solid #007bff; /* Farbe des Rahmens */
+  cursor: pointer; /* Zeigt den Zeiger beim Hover an */
+  appearance: none; /* Entfernt den Standardstil der Checkbox */
+  outline: none; /* Entfernt den Fokusrahmen */
+  background-color: white; /* Hintergrundfarbe */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Stil für die Checkbox, wenn sie aktiviert ist */
+.task-item-left input[type="checkbox"]:checked {
+  background-color: #007bff; /* Hintergrundfarbe bei Aktivierung */
+  border-color: #0056b3; /* Rahmenfarbe bei Aktivierung */
+  color: white; /* Farbe des Häkchens */
+}
+
+/* Optional: Stil für das Häkchen */
+.task-item-left input[type="checkbox"]:checked::after {
+  content: "✔"; /* Häkchen-Symbol */
+  font-size: 14px;
+  color: white;
+  display: flex;
+  text-align: center;
+}
+
+/* Stil für den Titel der Aufgabe */
+.task-item-title {
+  text-decoration: none;
+}
+
+.task-item-title.completed {
+  text-decoration: line-through;
+}
+
+/* Stil für den Lösch-Button */
+.task-item-delete-button {
+  background-color: red;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin: 0 0 0 10px;
+  order: 2;
+}
+
+.task-item-delete-button:hover {
+  background-color: darkred;
+}
+
+/* Stil für die Deadline */
+.task-item-deadline {
+  margin-left: 26px;
+  color: #666;
+  order: 1;
+}
+
+.task-item-deadline.overdue {
+  color: red;
+}
+
+.task-item-deadline.soon {
+  color: orange;
+}

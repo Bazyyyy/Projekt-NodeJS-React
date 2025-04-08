@@ -2,11 +2,20 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const TaskForm = ({ newTask, setNewTask, newDeadline, setNewDeadline, addTask }) => {
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            addTask();
+        }
+    };
+
     return (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div className="task-form">
             <input
+                className="task-input"
                 value={newTask}
                 onChange={(e) => setNewTask(e.target.value)}
+                onKeyDown={handleKeyDown}
                 placeholder="Neue Aufgabe"
             />
             <DatePicker
@@ -19,7 +28,9 @@ const TaskForm = ({ newTask, setNewTask, newDeadline, setNewDeadline, addTask })
                 dateFormat="yyyy-MM-dd"
                 className="react-datepicker-input"
             />
-            <button onClick={addTask}>Add Task</button>
+            <button className="add-task-button" onClick={addTask}>
+                +
+            </button>
         </div>
     );
 };

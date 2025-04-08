@@ -1,27 +1,42 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+  background-color: #ceb4b4;
   margin: 0;
   padding: 20px;
   display: flex;
   justify-content: center;
+  align-items: flex-start;
 }
 
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: 100vh;
+  justify-content: flex-start;
+
   text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+  width: 100%; /* Passt die Breite an den Viewport an */
+  max-width: 600px; /* Begrenze die maximale Breite */
 }
 
 .list-selection {
-  margin-bottom: 20px;
+  margin: 20px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .progress-bar-container {
-  margin-bottom: 1rem;
+  margin: 16px;
 }
 
 .progress-bar {
@@ -43,17 +58,20 @@ body {
 
 .task-list-container {
   margin-top: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0;
 }
 
 .task-list {
   list-style-type: none;
   padding: 0;
+  margin: 0px;
+  width: 100%;
 }
 
 .task-item {
   background: #fff;
-  margin: 8px 0;
-  padding: 10px;
   border-radius: 5px;
   display: flex;
   justify-content: space-between;
@@ -100,3 +118,59 @@ button:hover {
   background: #0056b3;
 }
 
+.back-button {
+  margin-top: 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  background-color: #0056b3;
+}
+
+.task-input {
+  flex: 1; /* Eingabefeld nimmt den verfügbaren Platz ein */
+  height: 40px; /* Einheitliche Höhe */
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.task-form {
+  display: flex;
+  align-items: center; /* Zentriert die Elemente vertikal */ /* Abstand zwischen den Elementen */
+  width: 100%; /* Passt die Breite an den Container an */
+  max-width: 600px; /* Begrenze die maximale Breite */
+  margin-bottom: 20px; /* Abstand zur Aufgabenliste */
+  box-sizing: border-box;
+}
+
+.react-datepicker-input {
+  height: 40px; /* Gleiche Höhe wie das Eingabefeld */
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+  width: 100%; /* Passt die Breite an */
+  max-width: 200px; /* Optional: Begrenze die maximale Breite */
+  flex-shrink: 0; /* Verhindert, dass das Feld schrumpft */
+}
+
+.add-task-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0px;
+}
+
+.add-task-button:hover {
+  background-color: #0056b3;
+}
