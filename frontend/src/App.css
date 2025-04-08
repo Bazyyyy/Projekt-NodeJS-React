@@ -4,22 +4,21 @@
   box-sizing: border-box;
 }
 
-body {
-  font-family: Arial, sans-serif;
-  background-color: #ceb4b4;
+html, body {
   margin: 0;
-  padding: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  padding: 0;
+  background-color: #ceb4b4;
+  min-height: 100%;
+  height: auto;
 }
+
 
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-
+  min-height: 100vh;
   text-align: center;
   padding: 20px;
   box-sizing: border-box;

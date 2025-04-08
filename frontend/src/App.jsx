@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import ListSelection from "./ListSelection";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
+
 import Print from "./Print"; // Import der Print-Komponente
+
 import "./App.css";
 
 const API_URL = "http://localhost:5000";
@@ -39,7 +41,7 @@ const App = () => {
 
     const addList = async () => {
         const title = newListName.trim();
-        const type = (newListType || "Einfache To Do Liste").trim();
+        const type = (newListType || "Einfache To-Do-Liste").trim();
         if (!title) return alert("Bitte gib einen Listennamen ein.");
 
         try {
@@ -113,6 +115,7 @@ const App = () => {
             if (!response.ok) throw new Error("Fehler beim Aktualisieren des Status");
 
             const updated = await response.json();
+
             setTasks(tasks.map((t) => (t.id === taskId ? updated : t)));
         } catch (err) {
             console.error("Fehler beim Umschalten des Task-Status:", err);
@@ -122,14 +125,19 @@ const App = () => {
     const deleteTask = async (taskId) => {
         try {
             await fetch(`${API_URL}/tasks/${taskId}`, { method: "DELETE" });
+
             setTasks(tasks.filter((t) => t.id !== taskId));
+
+
         } catch (err) {
             console.error("Fehler beim Löschen des Tasks:", err);
         }
     };
 
     const totalTasks = tasks.length;
+
     const completedTasks = tasks.filter((t) => t.completed).length;
+
     const progress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
 
     const selectedList = lists.find((list) => list.id === selectedListId);
@@ -185,7 +193,9 @@ const App = () => {
                         toggleTaskDone={toggleTaskDone}
                         deleteTask={deleteTask}
                     />
+
                     <Print tasks={tasks} listName={selectedList?.title || "Unbenannte Liste"} listType={selectedList?.type || "Standard-Typ"} />
+
                     <button
                         onClick={() => setSelectedListId(null)}
                         className="back-button"
