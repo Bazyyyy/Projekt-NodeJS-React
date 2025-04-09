@@ -1,58 +1,39 @@
 import React, { useRef } from "react";
+import "./Print.css"; // CSS-Datei importieren
 
 function Print({ tasks, listName, listType }) {
   const printRef = useRef();
 
   const handlePrint = () => {
-    const printContent = printRef.current.innerHTML;
-    const originalContent = document.body.innerHTML;
+    const iframe = document.createElement("iframe");
+    iframe.style.position = "absolute";
+    iframe.style.top = "-10000px";
+    document.body.appendChild(iframe);
 
-    // Temporär den Inhalt der Seite ändern
-    document.body.innerHTML = printContent;
+    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+    iframeDoc.body.innerHTML = printRef.current.innerHTML;
 
-    // Druck starten
-    window.print();
-
-    // Ursprünglichen Seiteninhalt wiederherstellen
-    document.body.innerHTML = originalContent;
+    iframe.contentWindow.print();
+    document.body.removeChild(iframe);
   };
 
   return (
     <div>
-      <div ref={printRef} style={{ display: "none" }}>
-        <div style={{ marginBottom: "20px" }}>
-          <h2 style={{ textAlign: "left", color: "#4CAF50", marginBottom: "10px" }}>{listType}</h2>
-          <p style={{ textAlign: "left", fontStyle: "italic" }}>({listName})</p>
+      <div ref={printRef} className="print-content">
+        <div className="print-header">
+          <h2 className="print-title">{listType}</h2> {/* "Einkaufsliste" wird hier angezeigt */}
+          <p className="print-subtitle">({listName})</p>
         </div>
-        <ul style={{ listStyleType: "none", padding: "0", marginLeft: "0" }}>
+        <ul className="print-list">
           {tasks.map((task, index) => (
-            <li
-              key={index}
-              style={{
-                marginBottom: "10px",
-                fontSize: "16px",
-                textAlign: "left",
-              }}
-            >
-              <span
-                style={{
-                  width: "15px",
-                  height: "15px",
-                  border: "2px solid #000",
-                  marginRight: "10px",
-                  display: "inline-block",
-                }}
-              ></span>
+            <li key={index} className="print-list-item">
+              <span className="checkbox"></span>
               {task.title} {task.completed ? "(✔ erledigt)" : ""}
             </li>
           ))}
         </ul>
       </div>
-      <button
-        onClick={handlePrint}
-        className="print-button"
-        title="Drucken"
-      >
+      <button onClick={handlePrint} className="print-button" title="Drucken">
         🖨️
       </button>
     </div>

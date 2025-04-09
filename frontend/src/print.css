@@ -1,0 +1,51 @@
+/* Standard: Druckansicht verstecken */
+.print-content {
+  display: none; /* Inhalte im normalen Modus verstecken */
+}
+
+/* Druckansicht: Sichtbar machen */
+@media print {
+  .print-content {
+    display: block !important; /* Sichtbar nur im Druckmodus */
+    padding: 20px; /* Innenabstand für besseren Abstand */
+    font-family: Arial, sans-serif; /* Klarer Schriftstil */
+    background-color: white; /* Weißer Hintergrund */
+    border: 2px solid black; /* Schwarzer Rahmen */
+    border-radius: 10px; /* Optional: Abgerundete Ecken */
+    width: fit-content; /* Breite passt sich an den Inhalt an */
+    margin: 20px auto; /* Zentriert den Rahmen */
+  }
+
+  .print-title {
+    text-align: center !important; /* Text zentrieren */
+    text-decoration: underline !important; /* Text unterstreichen */
+    font-size: 24px; /* Schriftgröße */
+    margin-bottom: 15px;
+    font-weight: bold; /* Hebe den Titel hervor */
+    color: black; /* Textfarbe für Druck */
+  }
+
+  .print-subtitle {
+    text-align: center;
+    font-style: italic; /* Kursiv darstellen */
+    font-size: 18px;
+    color: gray; /* Dezente Farbe für den Untertitel */
+  }
+
+  .print-list {
+    list-style-type: none; /* Keine Aufzählungszeichen */
+    padding: 0;
+    margin: 0;
+  }
+
+  .print-list-item {
+    font-size: 16px; /* Schriftgröße für Listenelemente */
+    margin-bottom: 10px;
+    text-align: left; /* Linksbündige Ausrichtung */
+  }
+
+  .checkbox,
+  .print-button {
+    display: none !important; /* Buttons und Checkboxen ausblenden */
+  }
+}
