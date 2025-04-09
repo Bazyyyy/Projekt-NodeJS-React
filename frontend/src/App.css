@@ -15,6 +15,7 @@ html, body {
 
 .container {
   display: flex;
+  background-color: #ceb4b4;;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
@@ -172,4 +173,157 @@ button:hover {
 
 .add-task-button:hover {
   background-color: #0056b3;
+}
+
+/* Light Mode (Standard) */
+body.light {
+  background-color: #ceb4b4;
+  color: #000;
+}
+
+.container.light {
+  background-color: #ceb4b4;
+  color: #000;
+}
+
+/* Dark Mode */
+body.dark {
+  background-color: #2a2a2b;
+  color: #fff;
+}
+
+.container.dark {
+  background-color: #2a2a2b;
+  color: #fff;
+}
+
+.task-item.dark {
+  background-color: #2a2a2b;
+  color: #000000;
+
+}
+/* Listenübersicht im Dark Mode */
+body.dark.list-selection {
+  background-color: #2a2a2b; /* Dunkler Hintergrund */
+  color: #fff; /* Helle Schriftfarbe */
+ 
+}
+/* Buttons im Dark Mode */
+body.dark button {
+  background-color: #333; /* Dunkler Hintergrund */
+  color: #fff; /* Helle Schriftfarbe */
+  border: 1px solid #555; /* Optional: Rahmenfarbe */
+}
+
+body.dark button:hover {
+  background-color: #555; /* Etwas hellerer Hintergrund beim Hover */
+}
+/* Hinzufügen-Button im Dark Mode */
+body.dark .list-selection-add-button {
+  background-color: #444; /* Dunkler Hintergrund */
+  color: #fff; /* Helle Schriftfarbe */
+  border: 1px solid #666; /* Optional: Rahmenfarbe */
+}
+
+body.dark .list-selection-add-button:hover {
+  background-color: #666; /* Etwas hellerer Hintergrund beim Hover */
+}
+
+/* Löschen-Button im Dark Mode */
+body.dark .delete-button {
+  background-color: #ff4d4d; /* Rotes Design für den Dark Mode */
+  color: #fff;
+  border: none;
+}
+
+body.dark .delete-button:hover {
+  background-color: #ff1a1a; /* Helleres Rot beim Hover */
+}
+
+/* Girly Mode */
+body.girly {
+  background-color: #ffc0cb; /* Pinker Hintergrund */
+  color: #fff;
+}
+
+.container.girly {
+  background-color: #ffc0cb; /* Helles Pink */
+  color: #fff;
+}
+
+.task-item.girly {
+  background-color: #ff69b4; /* Leichtes Pink */
+  color: #fff;
+  box-shadow: 0 2px 4px rgba(255, 105, 180, 0.5);
+}
+
+/* Button für den Moduswechsel */
+.theme-toggle-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.theme-toggle-button:hover {
+  background-color: #0056b3;
+}
+
+body.dark .theme-toggle-button {
+  background-color: #333;
+}
+
+body.girly .theme-toggle-button {
+  background-color: #ff69b4;
+}
+
+/* Stil für den Print-Button */
+.print-button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #4CAF50; /* Grüner Hintergrund */
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.print-button:hover {
+  background-color: #45a049; /* Etwas dunkleres Grün beim Hover */
+}
+body.girly .print-button {
+  background-color: #ff69b4; /* Helles Pink */
+  color: white;
+}
+
+body.girly .print-button:hover {
+  background-color: #ff1493; /* Dunkleres Pink beim Hover */
+}
+/* Löschen-Button im Girly Mode */
+body.girly .delete-button {
+  background-color: #69050e; /* Helles Pink */
+  color: white;
+  border: none;
+}
+
+body.girly .delete-button:hover {
+  background-color: #ff1414; /* Dunkleres Pink beim Hover */
+}
+body.dark h2 {
+  color: #acabab; /* Weiße Schriftfarbe für die Überschrift */
+}
+body.girly h2 {
+  color: #ff69b4; /* Helles Pink für die Überschrift */
+  text-shadow: 1px 1px 2px rgba(255, 105, 180, 0.5); /* Optional: Pinker Schatten */
 }

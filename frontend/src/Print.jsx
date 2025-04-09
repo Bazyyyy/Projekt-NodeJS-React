@@ -50,17 +50,10 @@ function Print({ tasks, listName, listType }) {
       </div>
       <button
         onClick={handlePrint}
-        style={{
-          marginTop: "20px",
-          padding: "10px",
-          backgroundColor: "#4CAF50",
-          color: "white",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-        }}
+        className="print-button"
+        title="Drucken"
       >
-        Drucken
+        🖨️
       </button>
     </div>
   );

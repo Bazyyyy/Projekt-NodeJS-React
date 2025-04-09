@@ -98,3 +98,39 @@
 .task-item-deadline.soon {
   color: orange;
 }
+/* Dark Mode für TaskItem */
+body.dark .task-item {
+  background-color: #1e1e1e; /* Dunkler Hintergrund */
+  color: #ffffff; /* Helle Schriftfarbe */
+  box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1); /* Heller Schatten */
+}
+
+body.dark .task-item-title {
+  color: #ffffff; /* Helle Schriftfarbe */
+}
+
+body.dark .task-item-title.completed {
+  color: #888888; /* Abgeschlossene Aufgaben in Grau */
+  text-decoration: line-through;
+}
+
+body.dark .task-item-delete-button {
+  background-color: #ff4d4d; /* Rotes Design für den Dark Mode */
+  color: #ffffff;
+}
+
+body.dark .task-item-delete-button:hover {
+  background-color: #ff1a1a; /* Helleres Rot beim Hover */
+}
+
+body.dark .task-item-deadline {
+  color: #cccccc; /* Helle Schriftfarbe für die Deadline */
+}
+
+body.dark .task-item-deadline.overdue {
+  color: #ff4d4d; /* Rot für überfällige Deadlines */
+}
+
+body.dark .task-item-deadline.soon {
+  color: #ffa500; /* Orange für bald fällige Deadlines */
+}
