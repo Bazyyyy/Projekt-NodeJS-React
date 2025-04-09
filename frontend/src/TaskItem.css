@@ -134,3 +134,49 @@ body.dark .task-item-deadline.overdue {
 body.dark .task-item-deadline.soon {
   color: #ffa500; /* Orange für bald fällige Deadlines */
 }
+body.dark .task-input,
+body.dark .react-datepicker-input {
+  background-color: #292929; /* Dunkler Hintergrund */
+  color: #fff; /* Helle Schriftfarbe */
+
+}
+body.girly .task-item {
+  background-color: #ec4598; /* Helles Pink */
+  color: white;
+  border: 1px solid #ff69b4; /* Rahmen in hellem Pink */
+  box-shadow: 0 2px 4px rgba(255, 105, 180, 0.5); /* Pinker Schatten */
+}
+
+body.girly .task-item:hover {
+  background-color: #ff69b4; /* Dunkleres Pink beim Hover */
+}
+/* Delete-Button im Girly Mode */
+body.girly .task-item-delete-button {
+  background-color: #dd2020; /* Helles Pink */
+  color: white;
+  border: none;
+}
+
+body.girly .task-item-delete-button:hover {
+  background-color: #ff1414; /* Dunkleres Pink beim Hover */
+}
+/* Add Task Button im Girly Mode */
+body.girly .add-task-button {
+  background-color: #ff69b4; /* Helles Pink */
+  color: #fff; /* Helle Schriftfarbe */
+
+}
+
+body.girly .add-task-button:hover {
+  background-color: #ff1493; /* Dunkleres Pink beim Hover */
+}
+/* Zurück zur Listenübersicht Button im Girly Mode */
+body.girly .back-button {
+  background-color: #ff69b4; /* Helles Pink */
+  color: #fff; /* Helle Schriftfarbe */
+ 
+}
+
+body.girly .back-button:hover {
+  background-color: #ff1493; /* Dunkleres Pink beim Hover */
+}

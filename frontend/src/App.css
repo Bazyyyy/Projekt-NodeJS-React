@@ -251,11 +251,6 @@ body.girly {
   color: #fff;
 }
 
-.task-item.girly {
-  background-color: #ff69b4; /* Leichtes Pink */
-  color: #fff;
-  box-shadow: 0 2px 4px rgba(255, 105, 180, 0.5);
-}
 
 /* Button für den Moduswechsel */
 .theme-toggle-button {
