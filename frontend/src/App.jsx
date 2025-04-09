@@ -17,6 +17,23 @@ const App = () => {
     const [newDeadline, setNewDeadline] = useState("");
     const [newListName, setNewListName] = useState("");
     const [newListType, setNewListType] = useState("");
+    const [theme, setTheme] = useState("light"); // Standardmodus ist Light Mode
+
+    // Wechsel zwischen den Modi
+    const toggleTheme = () => {
+        if (theme === "light") {
+            setTheme("dark");
+        } else if (theme === "dark") {
+            setTheme("girly");
+        } else {
+            setTheme("light");
+        }
+    };
+
+    // Anwenden des Themes auf den Body
+    useEffect(() => {
+        document.body.className = theme; // Setzt die Klasse des Bodys auf den aktuellen Modus
+    }, [theme]);
 
     useEffect(() => {
         fetch(`${API_URL}/lists`)
@@ -143,8 +160,14 @@ const App = () => {
     const selectedList = lists.find((list) => list.id === selectedListId);
 
     return (
-        <div className="container">
+        <div className={`container ${theme}`}>
             <h1>To-Do</h1>
+
+            <button className="theme-toggle-button" onClick={toggleTheme}>
+                {theme === "light" && "🌞"} {/* Sonne für Light Mode */}
+                {theme === "dark" && "🌙"} {/* Mond für Dark Mode */}
+                {theme === "girly" && "💖"} {/* Herz für Girly Mode */}
+            </button>
 
             {!selectedListId && (
                 <div className="list-selection">
