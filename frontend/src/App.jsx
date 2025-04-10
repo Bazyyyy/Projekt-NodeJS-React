@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import ListSelection from "./ListSelection";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
-import Print from "./Print"; // Import der Print-Komponente
+import MonthlyView from "./MonthlyView"; // Neu hinzugefügt
+import Print from "./Print";
 import "./App.css";
 
 const API_URL = "http://localhost:5000";
@@ -15,9 +16,8 @@ const App = () => {
   const [newDeadline, setNewDeadline] = useState("");
   const [newListName, setNewListName] = useState("");
   const [newListType, setNewListType] = useState("");
-  const [theme, setTheme] = useState("light"); // Standardmodus ist Light Mode
+  const [theme, setTheme] = useState("light");
 
-  // Wechsel zwischen den Modi
   const toggleTheme = () => {
     if (theme === "light") {
       setTheme("dark");
@@ -28,9 +28,8 @@ const App = () => {
     }
   };
 
-  // Anwenden des Themes auf den Body
   useEffect(() => {
-    document.body.className = theme; // Setzt die Klasse des Bodys auf den aktuellen Modus
+    document.body.className = theme;
   }, [theme]);
 
   useEffect(() => {
@@ -157,9 +156,9 @@ const App = () => {
       <h1>To-Do</h1>
 
       <button className="theme-toggle-button" onClick={toggleTheme}>
-        {theme === "light" && "🌞"} {/* Sonne für Light Mode */}
-        {theme === "dark" && "🌙"} {/* Mond für Dark Mode */}
-        {theme === "girly" && "💖"} {/* Herz für Girly Mode */}
+        {theme === "light" && "🌞"}
+        {theme === "dark" && "🌙"}
+        {theme === "girly" && "💖"}
       </button>
 
       {!selectedListId && (
@@ -215,6 +214,9 @@ const App = () => {
             listName={selectedList?.title || "Unbenannte Liste"}
             listType={selectedList?.type || "Standard-Typ"}
           />
+
+          {/* 📅 Monatsansicht unterhalb */}
+          <MonthlyView tasks={tasks} />
 
           <button
             onClick={() => setSelectedListId(null)}
