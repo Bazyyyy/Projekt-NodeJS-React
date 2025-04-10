@@ -6,12 +6,9 @@ const ListSelection = ({
     setSelectedListId,
     newListName,
     setNewListName,
-    newListType,
-    setNewListType,
     addList,
     deleteList,
 }) => {
-    const listTypes = ["Einkaufsliste", "Wochen To Do Liste", "Einfache To Do Liste"];
 
     const handleKeyDown = (e) => {
         if (e.key === "Enter") {
@@ -20,9 +17,6 @@ const ListSelection = ({
     };
 
     const handleAddList = () => {
-        const defaultType = "Einfache To Do Liste";
-        const selectedType = newListType || defaultType;
-        setNewListType(selectedType);
         addList();
     };
 
@@ -51,7 +45,7 @@ const ListSelection = ({
                         }`}
                         onClick={() => setSelectedListId(list.id)}
                     >
-                        {list.title || "(Ohne Titel)"} <small style={{ marginLeft: 5, color: "gray" }}>({list.type || "Einfache To Do´s"})</small>
+                        {list.title || "(Ohne Titel)"}
                     </button>
                     <button
                         className="delete-button"
