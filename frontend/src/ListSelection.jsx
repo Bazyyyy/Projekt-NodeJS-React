@@ -35,16 +35,7 @@ const ListSelection = ({
                 onKeyDown={handleKeyDown}
                 placeholder="Neue Liste"
             />
-            <select
-                className="list-selection-select"
-                value={newListType}
-                onChange={(e) => setNewListType(e.target.value)}
-            >
-                <option value="" disabled>Listentyp auswählen</option>
-                {listTypes.map((type) => (
-                    <option key={type} value={type}>{type}</option>
-                ))}
-            </select>
+     
             <button
                 className="list-selection-add-button"
                 onClick={handleAddList}
