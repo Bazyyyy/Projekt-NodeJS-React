@@ -141,7 +141,7 @@ body.dark .react-datepicker-input {
 
 }
 body.girly .task-item {
-  background-color: #ec4598; /* Helles Pink */
+  background-color: #ff69b4; /* Helles Pink */
   color: white;
   border: 1px solid #ff69b4; /* Rahmen in hellem Pink */
   box-shadow: 0 2px 4px rgba(255, 105, 180, 0.5); /* Pinker Schatten */
@@ -179,4 +179,11 @@ body.girly .back-button {
 
 body.girly .back-button:hover {
   background-color: #ff1493; /* Dunkleres Pink beim Hover */
+}
+/* Stil für Tasks des ausgewählten Tages */
+.task-item.selected-task {
+  border: 2px solid red; /* Roter Rand */
+  padding: 8px; /* Abstand innerhalb des Rahmens */
+  border-radius: 5px; /* Abgerundete Ecken */
+  margin-bottom: 10px; /* Abstand zwischen den Tasks */
 }

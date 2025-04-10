@@ -1,39 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
 import Calendar from "react-calendar";
-import 'react-calendar/dist/Calendar.css';
+import "react-calendar/dist/Calendar.css";
 import "./MonthlyView.css";
+import TaskList from "./TaskList";
 
-const MonthlyView = ({ tasks }) => {
-  const tileContent = ({ date, view }) => {
-    if (view !== "month") return null;
+const MonthlyView = ({ tasks, toggleTaskDone, deleteTask }) => {
+  const [date, setDate] = useState(new Date());
 
-    const dayTasks = tasks.filter(task => {
-      if (!task.deadline) return false;
-      const taskDate = new Date(task.deadline);
-      return (
-        taskDate.getFullYear() === date.getFullYear() &&
-        taskDate.getMonth() === date.getMonth() &&
-        taskDate.getDate() === date.getDate()
-      );
-    });
-
-    if (dayTasks.length === 0) return null;
-
-    return (
-      <ul className="calendar-task-list">
-        {dayTasks.map((task, index) => (
-          <li key={index} className={task.completed ? "done" : ""}>
-            {task.title}
-          </li>
-        ))}
-      </ul>
-    );
+  const handleDateChange = (selectedDate) => {
+    setDate(selectedDate);
   };
+
+  const goToToday = () => {
+    setDate(new Date()); // Setzt das Datum auf "Heute"
+  };
+
+  const selectedDate = date.toISOString().split("T")[0]; // Format für Vergleich
 
   return (
     <div className="calendar-container">
-      <h2>📅 Monatsübersicht</h2>
-      <Calendar tileContent={tileContent} />
+      <button className="go-to-today-button" onClick={goToToday}>
+        Heute
+      </button>
+      <Calendar
+        onChange={handleDateChange}
+        value={date}
+        tileContent={({ date, view }) => {
+          if (view === "month") {
+            const hasTask = tasks.some(
+              (task) => task.deadline === date.toISOString().split("T")[0]
+            );
+            if (hasTask) {
+              return <div className="calendar-task-indicator"></div>;
+            }
+          }
+          return null;
+        }}
+      />
+      <div className="tasks-for-date">
+        <TaskList
+          tasks={tasks}
+          selectedDate={selectedDate} // Übergibt das ausgewählte Datum
+          toggleTaskDone={toggleTaskDone}
+          deleteTask={deleteTask}
+        />
+      </div>
     </div>
   );
 };

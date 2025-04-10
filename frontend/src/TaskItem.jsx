@@ -1,6 +1,6 @@
 import "./TaskItem.css";
 
-const TaskItem = ({ task, toggleTaskDone, deleteTask }) => {
+const TaskItem = ({ task, toggleTaskDone, deleteTask, isSelected }) => {
   const today = new Date();
   const deadlineDate = task.deadline ? new Date(task.deadline) : null;
 
@@ -12,7 +12,7 @@ const TaskItem = ({ task, toggleTaskDone, deleteTask }) => {
     !task.completed;
 
   return (
-    <li className="task-item">
+    <li className={`task-item ${isSelected ? "selected-task" : ""}`}>
       <div className="task-item-content">
         {/* Linker Bereich: Deadline */}
         {task.deadline && (
