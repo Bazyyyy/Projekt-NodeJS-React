@@ -119,17 +119,20 @@ button:hover {
 }
 
 .back-button {
-  margin-top: 20px;
-  background-color: #007bff;
+  position: absolute; /* Positioniere den Button relativ zum Bildschirm */
+  top: 20px; /* Abstand von oben */
+  left: 20px; /* Abstand von links */
+  background-color: #007bff; /* Standardfarbe */
   color: white;
   border: none;
   padding: 10px 15px;
   border-radius: 5px;
   cursor: pointer;
+  z-index: 1000; /* Stellt sicher, dass der Button über anderen Elementen liegt */
 }
 
 .back-button:hover {
-  background-color: #0056b3;
+  background-color: #0056b3; /* Hover-Farbe */
 }
 
 .task-input {
