@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./MonthlyView.css";
-import TaskList from "./TaskList";
 
 const MonthlyView = ({ tasks, toggleTaskDone, deleteTask }) => {
   const [date, setDate] = useState(new Date());
@@ -37,14 +36,6 @@ const MonthlyView = ({ tasks, toggleTaskDone, deleteTask }) => {
           return null;
         }}
       />
-      <div className="tasks-for-date">
-        <TaskList
-          tasks={tasks}
-          selectedDate={selectedDate} // Übergibt das ausgewählte Datum
-          toggleTaskDone={toggleTaskDone}
-          deleteTask={deleteTask}
-        />
-      </div>
     </div>
   );
 };
