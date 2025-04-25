@@ -1,3 +1,4 @@
+import React from 'react';
 import "./TaskItem.css";
 
 const TaskItem = ({ task, toggleTaskDone, deleteTask, isSelected }) => {
@@ -39,7 +40,7 @@ const TaskItem = ({ task, toggleTaskDone, deleteTask, isSelected }) => {
               task.completed ? "completed" : ""
             }`}
           >
-            {task.title}
+            {task.text}
           </span>
         </div>
 

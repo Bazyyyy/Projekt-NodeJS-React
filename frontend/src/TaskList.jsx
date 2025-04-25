@@ -1,3 +1,4 @@
+import React from 'react';  // <- hinzufügen!
 import TaskItem from "./TaskItem";
 
 const TaskList = ({ tasks, toggleTaskDone, deleteTask, selectedDate }) => {
@@ -13,7 +14,7 @@ const TaskList = ({ tasks, toggleTaskDone, deleteTask, selectedDate }) => {
                     task={task}
                     toggleTaskDone={toggleTaskDone}
                     deleteTask={deleteTask}
-                    isSelected={task.deadline === selectedDate} // Überprüft, ob der Task zum ausgewählten Datum gehört
+                    isSelected={task.deadline === selectedDate}
                 />
             ))}
         </ul>
