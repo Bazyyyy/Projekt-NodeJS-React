@@ -5,6 +5,8 @@ import TaskList from "./TaskList";
 import MonthlyView from "./MonthlyView"; // Neu hinzugefügt
 import Print from "./Print";
 import "./App.css";
+import React from 'react';
+
 
 const API_URL = "http://localhost:5000";
 
