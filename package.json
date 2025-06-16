@@ -1,4 +1,5 @@
 {
+  "main": "frontend/electron.mjs",
   "dependencies": {
     "cors": "^2.8.5",
     "electron": "^36.4.0",
@@ -6,7 +7,8 @@
     "sqlite3": "^5.1.7"
   },
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "dev": "vite"
   },
   "devDependencies": {
     "vite": "^6.3.5"
