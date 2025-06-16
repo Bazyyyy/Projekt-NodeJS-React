@@ -1,6 +1,5 @@
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import React from "react";
 
 const TaskForm = ({ newTask, setNewTask, newDeadline, setNewDeadline, addTask }) => {
     const handleKeyDown = (e) => {
