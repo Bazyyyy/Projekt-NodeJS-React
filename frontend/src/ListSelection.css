@@ -26,6 +26,8 @@
   border-radius: 5px;
   width: 100%;
   margin-bottom: 10px;
+  background-color: black;
+  color: white;
 }
 
 /* Button zum Hinzufügen einer neuen Liste */
@@ -48,7 +50,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 5px;
+  padding: 8px 0 0 0;
   width: 100%;
   box-sizing: border-box;
 }
@@ -57,6 +59,7 @@
   padding: 8px 12px;
   border-radius: 5px;
   cursor: pointer;
+  margin: 0;
 }
 
 .list-selection-item .select-button {
@@ -67,7 +70,8 @@
   background-color: white;
   color: rgb(61, 59, 59);
   border: 1px solid #ddd;
-  margin-right: 10px; /* Abstand zum Delete-Button */
+  margin-right: 10px;
+  margin-bottom: 0; /* Abstand zum Delete-Button */
 }
 
 .list-selection-item .select-button.selected {
@@ -86,4 +90,100 @@
 
 .list-selection-item .delete-button:hover {
   background-color: darkred;
+}
+
+/* Dark Mode für die Listenübersicht */
+body.dark .list-selection-container {
+  background-color: #2a2a2b; /* Dunkler Hintergrund */
+  color: #ffffff; /* Helle Schriftfarbe */
+
+}
+
+/* Eingabefeld im Dark Mode */
+body.dark .list-selection-input {
+  background-color: #292929; /* Dunkler Hintergrund */
+  color: #1d1d1d; /* Helle Schriftfarbe */
+ 
+}
+
+/* Dropdown im Dark Mode */
+body.dark .list-selection-select {
+  background-color: #333; /* Dunkler Hintergrund */
+  color: #ffffff; /* Helle Schriftfarbe */
+
+}
+
+
+/* Einzelne Listen-Buttons im Dark Mode */
+body.dark .list-selection-item .select-button {
+  background-color: #333; /* Dunkler Hintergrund */
+  color: #ffffff; /* Helle Schriftfarbe */
+  border: 1px solid #555; /* Rahmenfarbe */
+}
+
+body.dark .list-selection-item .select-button.selected {
+  background-color: #555; /* Etwas hellerer Hintergrund */
+}
+
+/* Löschen-Button im Dark Mode */
+body.dark .list-selection-item .delete-button {
+  background-color: #ff4d4d; /* Rotes Design für den Dark Mode */
+  color: #ffffff;
+}
+
+body.dark .list-selection-item .delete-button:hover {
+  background-color: #ff1a1a; /* Helleres Rot beim Hover */
+}
+
+/* Girly Mode für die Listenübersicht */
+body.girly .list-selection-container {
+  background-color: #ffc0cb; /* Leichtes Pink */
+  color: #585858; /* Helle Schriftfarbe */
+  
+}
+
+/* Eingabefeld im Girly Mode */
+body.girly .list-selection-input {
+  background-color: #ffffff; /* Helles Pink */
+  color: #363636; /* Helle Schriftfarbe */
+  
+}
+
+/* Dropdown im Girly Mode */
+body.girly .list-selection-select {
+  background-color: #d35192; /* Helles Pink */
+  color: #ffffff; /* Helle Schriftfarbe */
+
+}
+
+/* Hinzufügen-Button im Girly Mode */
+body.girly .list-selection-add-button {
+  background-color: #ff69b4; /* Helles Pink */
+  color: #ffffff; /* Helle Schriftfarbe */
+  
+}
+
+body.girly .list-selection-add-button:hover {
+  background-color: #ff1493; /* Dunkleres Pink beim Hover */
+}
+
+/* Einzelne Listen-Buttons im Girly Mode */
+body.girly .list-selection-item .select-button {
+  background-color: #ffffff; /* Leichtes Pink */
+  color: #4b4b4b; /* Helle Schriftfarbe */
+
+}
+
+body.girly .list-selection-item .select-button.selected {
+  background-color: #ff69b4; /* Helles Pink */
+}
+
+/* Löschen-Button im Girly Mode */
+body.girly .list-selection-item .delete-button {
+  background-color: #dd2020; /* Helles Pink */
+  color: #ffffff;
+}
+
+body.girly .list-selection-item .delete-button:hover {
+  background-color: #ff1414; /* Dunkleres Pink beim Hover */
 }

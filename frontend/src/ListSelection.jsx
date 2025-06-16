@@ -1,4 +1,6 @@
 import "./ListSelection.css";
+import React from 'react';
+
 
 const ListSelection = ({
     lists,
@@ -6,12 +8,9 @@ const ListSelection = ({
     setSelectedListId,
     newListName,
     setNewListName,
-    newListType,
-    setNewListType,
     addList,
     deleteList,
 }) => {
-    const listTypes = ["Einkaufsliste", "Wochen To Do Liste", "Einfache To Do Liste"];
 
     const handleKeyDown = (e) => {
         if (e.key === "Enter") {
@@ -20,9 +19,6 @@ const ListSelection = ({
     };
 
     const handleAddList = () => {
-        const defaultType = "Einfache To Do Liste";
-        const selectedType = newListType || defaultType;
-        setNewListType(selectedType);
         addList();
     };
 
@@ -35,16 +31,7 @@ const ListSelection = ({
                 onKeyDown={handleKeyDown}
                 placeholder="Neue Liste"
             />
-            <select
-                className="list-selection-select"
-                value={newListType}
-                onChange={(e) => setNewListType(e.target.value)}
-            >
-                <option value="" disabled>Listentyp auswählen</option>
-                {listTypes.map((type) => (
-                    <option key={type} value={type}>{type}</option>
-                ))}
-            </select>
+     
             <button
                 className="list-selection-add-button"
                 onClick={handleAddList}
@@ -60,7 +47,7 @@ const ListSelection = ({
                         }`}
                         onClick={() => setSelectedListId(list.id)}
                     >
-                        {list.title || "(Ohne Titel)"} <small style={{ marginLeft: 5, color: "gray" }}>({list.type || "Einfache To Do´s"})</small>
+                        {list.title || "(Ohne Titel)"}
                     </button>
                     <button
                         className="delete-button"

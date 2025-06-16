@@ -1,0 +1,249 @@
+/* Kalender-Container */
+.calendar-container {
+    margin-top: 40px;
+    padding: 16px;
+    background-color: rgba(255, 255, 255, 0.9); /* Heller Hintergrund */
+    border-radius: 8px;
+    box-shadow: 0 0 10px #0002;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    color: rgb(0, 0, 0); /* Schwarze Schrift */
+    display: flex; /* Flexbox für Zentrierung */
+    flex-direction: column; /* Elemente vertikal anordnen */
+    align-items: center; /* Horizontal zentrieren */
+    justify-content: center; /* Vertikal zentrieren */
+    min-height: 400px; /* Mindesthöhe für den Container */
+}
+
+/* Kalender-Stile */
+.react-calendar {
+    background-color: #f9f9f9; /* Heller Hintergrund */
+    border: 1px solid #ddd; /* Rahmenfarbe */
+    border-radius: 8px;
+    color: #333; /* Standard-Schriftfarbe */
+    font-family: Arial, sans-serif;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Passt die Breite an den Container an */
+    max-width: 600px; /* Begrenze die maximale Breite */
+}
+
+/* Tage im Kalender */
+.react-calendar__tile {
+    background-color: #fff; /* Weißer Hintergrund */
+    color: #333; /* Dunkle Schrift */
+    border-radius: 4px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* Hover-Effekt für Tage */
+.react-calendar__tile:hover {
+    background-color: #007bff; /* Blau beim Hover */
+    color: #fff; /* Weiße Schrift beim Hover */
+}
+
+/* Aktueller Tag */
+.react-calendar__tile--now {
+    background-color: #ffeb3b; /* Gelber Hintergrund für den aktuellen Tag */
+    color: #000; /* Schwarze Schrift */
+    font-weight: bold;
+}
+
+/* Ausgewählter Tag */
+.react-calendar__tile--active {
+    background-color: #007bff; /* Blau für ausgewählten Tag */
+    color: #fff; /* Weiße Schrift */
+    font-weight: bold;
+}
+
+/* Navigation (Monatswechsel) */
+.react-calendar__navigation button {
+    background-color: #007bff; /* Blau für Navigation */
+    color: #fff; /* Weiße Schrift */
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.react-calendar__navigation button:hover {
+    background-color: #0056b3; /* Dunkleres Blau beim Hover */
+}
+
+/* Wochentage */
+.react-calendar__month-view__weekdays {
+    background-color: #f1f1f1; /* Heller Hintergrund für Wochentage */
+    color: #333; /* Dunkle Schrift */
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Wochenende */
+.react-calendar__month-view__days__day--weekend {
+    color: #d32f2f; /* Rote Schrift für Wochenenden */
+}
+
+/* Kalender-Task-Liste */
+.calendar-task-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 10px;
+    color: #333;
+}
+
+.calendar-task-list li {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.calendar-task-list li.done {
+    color: green;
+    text-decoration: line-through;
+}
+
+/* Button für "Heute" */
+.go-to-today-button {
+    background-color: #007bff; /* Blau */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.go-to-today-button:hover {
+    background-color: #0056b3; /* Dunkleres Blau beim Hover */
+}
+
+/* Dark Mode für den Kalender */
+body.dark .react-calendar {
+    background-color: #333; /* Dunkler Hintergrund */
+    color: #fff; /* Weiße Schrift */
+    border: 1px solid #555; /* Rahmenfarbe */
+}
+
+body.dark .react-calendar__tile {
+    background-color: #444; /* Dunkler Hintergrund */
+    color: #fff; /* Weiße Schrift */
+}
+
+body.dark .react-calendar__tile:hover {
+    background-color: #555; /* Etwas hellerer Hintergrund beim Hover */
+    color: #fff;
+}
+
+body.dark .react-calendar__tile--now {
+    background-color: #ff9800; /* Orange für den aktuellen Tag */
+    color: #000; /* Schwarze Schrift */
+}
+
+body.dark .react-calendar__tile--active {
+    background-color: #007bff; /* Blau für ausgewählten Tag */
+    color: #fff;
+}
+
+body.dark .react-calendar__navigation button {
+    background-color: #444; /* Dunkler Hintergrund */
+    color: #fff; /* Weiße Schrift */
+    border: none;
+}
+
+body.dark .react-calendar__navigation button:hover {
+    background-color: #555; /* Etwas hellerer Hintergrund beim Hover */
+}
+
+/* Dark Mode für den Kalender-Container */
+body.dark .calendar-container {
+    background-color: #1e1e1e; /* Dunkler Hintergrund */
+    color: #fff; /* Weiße Schrift */
+    border: 1px solid #333; /* Rahmenfarbe */
+    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1); /* Heller Schatten */
+}
+
+/* Roter Punkt für Tage mit Deadlines */
+.calendar-task-indicator {
+    width: 6px;
+    height: 6px;
+    background-color: red; /* Farbe des Punktes */
+    border-radius: 50%; /* Macht den Punkt rund */
+    margin: 2px auto 0; /* Zentriert den Punkt unter der Zahl */
+}
+
+/* Tasks für ein bestimmtes Datum */
+.tasks-for-date {
+    margin-top: 20px;
+}
+
+.task-item.selected-task {
+    font-weight: bold;
+    color: #007bff; /* Blau für ausgewählte Tasks */
+}
+/* Stil für Tasks des ausgewählten Tages */
+.task-item.selected-task {
+  border: 2px solid red; /* Roter Rand */
+  padding: 8px; /* Abstand innerhalb des Rahmens */
+  border-radius: 5px; /* Abgerundete Ecken */
+  margin-bottom: 10px; /* Abstand zwischen den Tasks */
+}
+
+/* Girly Mode für den Kalender */
+body.girly .react-calendar {
+    background-color: #ffc0cb; /* Heller pinker Hintergrund */
+    color: #fff; /* Weiße Schrift */
+    border: 1px solid #ff69b4; /* Rahmen in hellem Pink */
+}
+
+body.girly .react-calendar__tile {
+    background-color: #fff; /* Weißer Hintergrund */
+    color: #ff69b4; /* Pinke Schrift */
+}
+
+body.girly .react-calendar__tile:hover {
+    background-color: #ff69b4; /* Helles Pink beim Hover */
+    color: #fff; /* Weiße Schrift */
+}
+
+body.girly .react-calendar__tile--now {
+    background-color: #ff1493; /* Dunkleres Pink für den aktuellen Tag */
+    color: #fff; /* Weiße Schrift */
+}
+
+body.girly .react-calendar__tile--active {
+    background-color: #ff69b4; /* Helles Pink für ausgewählten Tag */
+    color: #fff;
+}
+
+body.girly .react-calendar__navigation button {
+    background-color: #ff69b4; /* Helles Pink */
+    color: #fff; /* Weiße Schrift */
+    border: none;
+}
+
+body.girly .react-calendar__navigation button:hover {
+    background-color: #ff1493; /* Dunkleres Pink beim Hover */
+}
+
+/* Girly Mode für den "Heute"-Button */
+body.girly .go-to-today-button {
+    background-color: #ff69b4; /* Helles Pink */
+    color: white; /* Weiße Schrift */
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(255, 105, 180, 0.5); /* Pinker Schatten */
+}
+
+body.girly .go-to-today-button:hover {
+    background-color: #ff1493; /* Dunkleres Pink beim Hover */
+}
+
