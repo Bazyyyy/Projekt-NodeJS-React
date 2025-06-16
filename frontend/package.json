@@ -22,5 +22,11 @@
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "^4.9.5"
-  }
+  },
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
