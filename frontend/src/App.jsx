@@ -2,11 +2,10 @@ import { useState, useEffect } from "react";
 import ListSelection from "./ListSelection";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
-import MonthlyView from "./MonthlyView"; // Neu hinzugefügt
+import MonthlyView from "./MonthlyView";
 import Print from "./Print";
 import "./App.css";
-import React from 'react';
-
+import React from "react";
 
 const API_URL = "http://localhost:5000";
 
@@ -77,6 +76,12 @@ const App = () => {
       setNewListName("");
       setNewListType("");
       setSelectedListId(list.id);
+
+      // Tasks der neuen Liste sofort laden
+      fetch(`${API_URL}/lists/${list.id}/tasks`)
+        .then((res) => res.json())
+        .then((data) => setTasks(data))
+        .catch(() => setTasks([]));
     } catch (err) {
       console.error("Fehler beim Hinzufügen der Liste:", err);
     }
@@ -217,7 +222,6 @@ const App = () => {
             listType={selectedList?.type || "Standard-Typ"}
           />
 
-          {/* 📅 Monatsansicht unterhalb */}
           <MonthlyView tasks={tasks} />
 
           <button
