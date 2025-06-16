@@ -1,51 +1,62 @@
-/* Standard: Druckansicht verstecken */
+/* Standardansicht */
 .print-content {
-  display: none; /* Inhalte im normalen Modus verstecken */
+  display: block; /* Inhalte normal sichtbar */
+  font-family: Arial, sans-serif;
 }
 
-/* Druckansicht: Sichtbar machen */
+/* Druckansicht */
 @media print {
+  body {
+    background: white !important;
+    margin: 0;
+    padding: 20px;
+  }
+
   .print-content {
-    display: block !important; /* Sichtbar nur im Druckmodus */
-    padding: 20px; /* Innenabstand für besseren Abstand */
-    font-family: Arial, sans-serif; /* Klarer Schriftstil */
-    background-color: white; /* Weißer Hintergrund */
-    border: 2px solid black; /* Schwarzer Rahmen */
-    border-radius: 10px; /* Optional: Abgerundete Ecken */
-    width: fit-content; /* Breite passt sich an den Inhalt an */
-    margin: 20px auto; /* Zentriert den Rahmen */
+    display: block !important;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background: white;
+    border: 2px solid black;
+    border-radius: 10px;
+    width: 100%; /* Volle Breite für bessere Darstellung */
+    max-width: 800px; /* Begrenzung auf sinnvolle Druckgröße */
+    margin: auto;
   }
 
   .print-title {
-    text-align: center !important; /* Text zentrieren */
-    text-decoration: underline !important; /* Text unterstreichen */
-    font-size: 24px; /* Schriftgröße */
+    text-align: center;
+    text-decoration: underline;
+    font-size: 24px;
     margin-bottom: 15px;
-    font-weight: bold; /* Hebe den Titel hervor */
-    color: black; /* Textfarbe für Druck */
+    font-weight: bold;
+    color: black;
   }
 
   .print-subtitle {
     text-align: center;
-    font-style: italic; /* Kursiv darstellen */
+    font-style: italic;
     font-size: 18px;
-    color: gray; /* Dezente Farbe für den Untertitel */
+    color: black;
   }
 
   .print-list {
-    list-style-type: none; /* Keine Aufzählungszeichen */
+    list-style-type: none;
     padding: 0;
     margin: 0;
   }
 
   .print-list-item {
-    font-size: 16px; /* Schriftgröße für Listenelemente */
+    font-size: 16px;
     margin-bottom: 10px;
-    text-align: left; /* Linksbündige Ausrichtung */
+    text-align: left;
+    padding: 5px 0;
+    border-bottom: 1px solid black;
   }
 
+  /* Elemente ausblenden, die nicht gedruckt werden sollen */
   .checkbox,
   .print-button {
-    display: none !important; /* Buttons und Checkboxen ausblenden */
+    display: none !important;
   }
 }

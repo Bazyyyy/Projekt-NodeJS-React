@@ -1,4 +1,5 @@
 {
+<<<<<<< Updated upstream
   "main": "electron.mjs",
   "dependencies": {
     "axios": "^1.10.0",
@@ -26,6 +27,30 @@
   "name": "frontend",
   "version": "1.0.0",
   "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
+=======
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
+  "main": "eslint.config.js",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "react": "^18.2.0",
+    "react-calendar": "^4.0.0",
+    "react-datepicker": "^4.11.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "vite": "^6.0.0",
+    "vitest": "^3.2.3"
+  },
+  "scripts": {
+    "start": "vite",
+    "dev": "vite",
+    "build": "vite build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+>>>>>>> Stashed changes
   "keywords": [],
   "author": "",
   "license": "ISC"
