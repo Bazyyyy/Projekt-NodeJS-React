@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "cors": "^2.8.5",
+    "electron": "^36.4.0",
+    "express": "^5.1.0",
+    "sqlite3": "^5.1.7"
+  },
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
+  }
+}
