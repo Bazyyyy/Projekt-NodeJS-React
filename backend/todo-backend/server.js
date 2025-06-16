@@ -54,8 +54,7 @@ app.post("/lists", (req, res) => {
     }
 
     const cleanTitle = title.trim();
-    const cleanType = typeof type === "string" && type.trim() !== "" ? type.trim() : "Allgemein";
-
+    const cleanType = (type || "Allgemein").trim();
 
     db.run(
         "INSERT INTO lists (title, type) VALUES (?, ?)",

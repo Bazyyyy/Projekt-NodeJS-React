@@ -40,7 +40,7 @@ const TaskItem = ({ task, toggleTaskDone, deleteTask, isSelected }) => {
               task.completed ? "completed" : ""
             }`}
           >
-            {task.title}
+            {task.text}
           </span>
         </div>
 
