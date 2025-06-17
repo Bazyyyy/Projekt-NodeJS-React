@@ -21,6 +21,7 @@ Ein Aufgabenplaner mit Web- und Desktop-Unterstützung. Gebaut mit React 18, Vit
 - [npm](https://www.npmjs.com/)
 - [Docker](https://www.docker.com/) (für Build & Deployment)
 - [Electron](https://www.electronjs.org/) (optional, lokal)
+- [Morgan]
 
 ---
 
@@ -75,3 +76,19 @@ Print.css not found in Docker	Groß-/Kleinschreibung! → print.css vs Print.css
 Electron "Cannot find module"	electron.mjs fehlt oder "main" in package.json falsch
 ERR_CONNECTION_REFUSED (Electron)	npm run dev nicht gestartet → Dev-Server fehlt
 
+
+
+scripts/
+├── dev.sh
+├── run-backend.sh
+├── run-frontend.sh
+├── setup-db.sh
+├── logs.sh
+└── docker-build.sh
+
+
+starte script mit:
+    chmod +x scripts/dev.sh
+    ./scripts/dev.sh
+
+WICHTIG IN UBUNTU
