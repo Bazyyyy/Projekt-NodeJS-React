@@ -1,9 +1,19 @@
+
 const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
 const cors = require("cors");
 
 const app = express();
-const port = 5000;
+const fs = require("fs");
+const morgan = require("morgan");
+
+fs.mkdirSync("logs", { recursive: true });
+
+const accessLogStream = fs.createWriteStream("logs/server.log", {flags: "a"});
+
+app.use(morgan("dev"));
+app.use(morgan("combined", {stream: accessLogStream}));
+const port = 5050;
 
 app.use(cors());
 app.use(express.json());
