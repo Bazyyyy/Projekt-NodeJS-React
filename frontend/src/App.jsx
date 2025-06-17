@@ -5,8 +5,7 @@ import TaskList from "./TaskList";
 import MonthlyView from "./MonthlyView"; // Neu hinzugefügt
 import Print from "./Print";
 import "./App.css";
-import React from 'react';
-
+import React from "react";
 
 const API_URL = "http://localhost:5000";
 
@@ -157,6 +156,9 @@ const App = () => {
     <div className={`container ${theme}`}>
       <h1>To-Do</h1>
 
+      {/* Print-Button oben rechts */}
+      <Print />
+
       <button className="theme-toggle-button" onClick={toggleTheme}>
         {theme === "light" && "🌞"}
         {theme === "dark" && "🌙"}
@@ -210,14 +212,6 @@ const App = () => {
             toggleTaskDone={toggleTaskDone}
             deleteTask={deleteTask}
           />
-
-          <Print
-            tasks={tasks}
-            listName={selectedList?.title || "Unbenannte Liste"}
-            listType={selectedList?.type || "Standard-Typ"}
-          />
-
-          {/* 📅 Monatsansicht unterhalb */}
           <MonthlyView tasks={tasks} />
 
           <button
