@@ -2,10 +2,33 @@
 const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
 const cors = require("cors");
-
+const cron = require("node-cron");
 const app = express();
 const fs = require("fs");
 const morgan = require("morgan");
+
+function checkOverdueTasks() {
+  const today = new Date().toISOString().split("T")[0];
+
+  db.all(
+    "SELECT * FROM tasks WHERE deadline IS NOT NULL AND completed = 0 AND deadline < ?",
+    [today],
+    (err, rows) => {
+      if (err) {
+        return console.error("Fehler bei der Überfälligkeitsprüfung:", err.message);
+      }
+
+      if (rows.length > 0) {
+        console.log(`🛎️ ${rows.length} überfällige Aufgabe(n)!:`);
+        rows.forEach((t) =>
+          console.log(`🔸 [${t.id}] ${t.title} (Deadline: ${t.deadline})`)
+        );
+      } else {
+        console.log(" Keine überfälligen Aufgaben.");
+      }
+    }
+  );
+}
 
 fs.mkdirSync("logs", { recursive: true });
 
@@ -18,10 +41,24 @@ const port = 5050;
 app.use(cors());
 app.use(express.json());
 
+
+
 const db = new sqlite3.Database("./todo.db", (err) => {
     if (err) console.error(err.message);
     console.log("Connected to SQLite database.");
 });
+
+console.log("Kleine Roboter starten für dich den Server...");
+
+cron.schedule("0 0 * * *", checkOverdueTasks);
+checkOverdueTasks();
+
+console.log("Kleine Roboter haben den Server gestartet!");
+setTimeout(() => {
+    
+},)
+
+
 
 // Optional: Versuche Spalte hinzuzufügen (ignoriert Fehler, wenn sie schon existiert)
 db.run("ALTER TABLE tasks ADD COLUMN deadline TEXT", (err) => {
@@ -48,6 +85,7 @@ db.run(`
         FOREIGN KEY (list_id) REFERENCES lists (id) ON DELETE CASCADE
     )
 `);
+
 
 app.get("/lists", (req, res) => {
     db.all("SELECT * FROM lists", [], (err, rows) => {
