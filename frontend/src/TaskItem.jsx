@@ -22,9 +22,11 @@ const TaskItem = ({ task, toggleTaskDone, deleteTask, isSelected }) => {
               isOverdue ? "overdue" : isSoon ? "soon" : ""
             }`}
           >
-            Zu erledigen bis: {task.deadline}
-            {isOverdue && " ⏰ Überfällig!"}
-            {isSoon && " ⚠️ bald fällig"}
+            {task.completed
+            ? `Erledigt am: ${task.deadline}`
+            : `Zu erledigen bis: ${task.deadline}`}
+            {isOverdue && !task.completed && " ⏰ Überfällig!"}
+            {isSoon && !task.completed && " ⚠️ bald fällig"}
           </small>
         )}
 

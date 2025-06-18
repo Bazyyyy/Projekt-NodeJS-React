@@ -1,4 +1,3 @@
-
 const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
 const cors = require("cors");
@@ -11,7 +10,7 @@ function checkOverdueTasks() {
   const today = new Date().toISOString().split("T")[0];
 
   db.all(
-    "SELECT * FROM tasks WHERE deadline IS NOT NULL AND completed = 0 AND deadline < ?",
+    "SELECT * FROM tasks WHERE deadline IS NOT NULL AND completed = 0 AND deadline < ? ORDER BY CASE WHEN deadline is NULL THEN 1 WHEN deadline < DATE('now') THEN 0 ELSE 2 END, deadline ASC",
     [today],
     (err, rows) => {
       if (err) {
@@ -30,11 +29,13 @@ function checkOverdueTasks() {
   );
 }
 
+
+
 fs.mkdirSync("logs", { recursive: true });
 
 const accessLogStream = fs.createWriteStream("logs/server.log", {flags: "a"});
 
-app.use(morgan("dev"));
+//app.use(morgan("dev"));
 app.use(morgan("combined", {stream: accessLogStream}));
 const port = 5050;
 
@@ -86,13 +87,21 @@ db.run(`
     )
 `);
 
-
 app.get("/lists", (req, res) => {
     db.all("SELECT * FROM lists", [], (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
-        res.json(rows);
+
+        //const virtualLists = [
+          //  {
+            //    id: -1,
+              //  title: "Überfällige Aufgaben",
+                //type: "Überfällig",
+            //}
+        //];
+        res. json(rows);
     });
 });
+
 
 app.post("/lists", (req, res) => {
     const { title, type } = req.body;
@@ -120,15 +129,48 @@ app.post("/lists", (req, res) => {
 
 app.get("/lists/:listId/tasks", (req, res) => {
     const { listId } = req.params;
-    db.all("SELECT * FROM tasks WHERE list_id = ?", [listId], (err, rows) => {
+    db.all("SELECT * FROM tasks WHERE list_id = ? ORDER BY CASE WHEN deadline IS NULL THEN 1 WHEN deadline < DATE('now') THEN 0 ELSE 2 END, deadline ASC", [listId], (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
-        const tasks = rows.map(task => ({
-            ...task,
-            completed: task.completed === 1
-        }));
+        //const tasks = rows.map(task => ({
+          //  ...task,
+            //completed: task.completed === 1
+        //}));
+        const today  = new Date().toISOString().split("T")[0];            // Setup date for overdue check
+        const tasks = rows.map(task => {
+            const isOverdue = task.deadline && task.deadline < today && !task.completed;
+            
+            return {
+                ...task,
+                completed: task.completed === 1,
+                overdue: isOverdue,
+            };
+        });
         res.json(tasks);
     });
 });
+
+
+app.get("/lists/-1/tasks", (req, res) => {
+    const today = new Date().toISOString().split("T")[0];
+
+    db.all(
+        'SELECT * FROM tasks WHERE deadline IS NOT NULL AND completed = 0 AND deadline < DATE(\'now\') ORDER BY deadline ASC', [], (err, rows) => {
+            if (err) return res.status(500).json({ error: err.message});
+
+            const tasks = rows.map(task => ({
+                ...task,
+                completed: task.completed === 1,
+                overdue: true
+            }));
+
+            res.json(tasks);
+        }
+       );
+});
+
+
+
+console.log("Kleine Roboter schicken die Listen...");
 
 app.post("/lists/:listId/tasks", (req, res) => {
     const { listId } = req.params;
@@ -146,7 +188,7 @@ app.post("/lists/:listId/tasks", (req, res) => {
         [cleanTitle, false, listId, cleanDeadline],
         function (err) {
             if (err) return res.status(500).json({ error: err.message });
-            res.json({ id: this.lastID, title: cleanTitle, completed: false, list_id: listId, deadline: cleanDeadline });
+            res.json({ id: this.lastID, title: cleanTitle, completed: 0, list_id: listId, deadline: cleanDeadline });
         }
     );
 });
