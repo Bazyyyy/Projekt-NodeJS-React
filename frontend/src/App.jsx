@@ -8,7 +8,7 @@ import "./App.css";
 import React from 'react';
 
 
-const API_URL = "http://localhost:5000";
+const API_URL = "http://localhost:5050";
 
 const App = () => {
   const [lists, setLists] = useState([]);
