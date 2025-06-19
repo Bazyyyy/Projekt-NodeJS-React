@@ -21,6 +21,7 @@ Ein Aufgabenplaner mit Web- und Desktop-Unterstützung. Gebaut mit React 18, Vit
 - [npm](https://www.npmjs.com/)
 - [Docker](https://www.docker.com/) (für Build & Deployment)
 - [Electron](https://www.electronjs.org/) _(optional)_
+- [vitest] for testing
 - 📦 Globale Dependencies im Backend:
 
   ```bash

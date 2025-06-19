@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/env bash
+
 echo "Starte Entwicklungsmodus..."
 
 ( cd backend/todo-backend && npm install && npm run start ) & BACKEND_PID=$!
