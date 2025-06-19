@@ -1,327 +1,143 @@
-* {
+/* Globales Layout */
+body {
   margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  transition: background 0.3s, color 0.3s;
 }
 
-html, body {
-  margin: 0;
-  padding: 0;
-  background-color: #ceb4b4;
-  min-height: 100%;
-  height: 100%;
-}
-
-
-.container {
+/* Layoutstruktur mit Sidebar */
+.app-container {
   display: flex;
-  background-color: #ceb4b4;;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  min-height: 100vh;
-  text-align: center;
+  height: 100vh;
+}
+
+/* === THEMES === */
+body.light {
+  background: #f9f9f9;
+  color: #333;
+}
+
+body.dark {
+  background: #1e1e1e;
+  color: #f9f9f9;
+}
+
+body.girly {
+  background: #ffe6f0;
+  color: #880e4f;
+}
+
+/* Sidebar (ListSelection) */
+.sidebar {
+  width: 250px;
   padding: 20px;
-  box-sizing: border-box;
-  width: 100%; /* Passt die Breite an den Viewport an */
-  max-width: 600px; /* Begrenze die maximale Breite */
+  background: #f0f0f0;
+  border-right: 1px solid #ccc;
+  overflow-y: auto;
 }
 
-.list-selection {
-  margin: 20px;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+body.dark .sidebar {
+  background: #2e2e2e;
+  border-color: #444;
 }
 
+body.girly .sidebar {
+  background: #fff0f5;
+  border-color: #ffb6c1;
+}
+
+/* Hauptbereich */
+.main-content {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+}
+
+/* Buttons */
+button {
+  padding: 8px 16px;
+  margin: 5px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.theme-toggle-button {
+  float: right;
+  font-size: 1.2rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* Input-Styling */
+input,
+select {
+  padding: 8px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Fortschrittsbalken */
 .progress-bar-container {
-  margin: 16px;
+  margin: 10px 0;
 }
 
 .progress-bar {
-  background: #eee;
+  background: #ddd;
   height: 10px;
-  width: 100%;
   border-radius: 5px;
+  overflow: hidden;
 }
 
 .progress-bar-fill {
-  height: 100%;
-  border-radius: 5px;
-  transition: width 0.3s ease;
+  height: 10px;
+  background: orange;
+  transition: width 0.3s;
 }
 
-.progress-text {
-  color: #555;
-}
-
-.task-list-container {
-  margin-top: 20px;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 0;
-}
-
-.task-list {
-  list-style-type: none;
-  padding: 0;
-  margin: 0px;
-  width: 100%;
-}
-
+/* Task-Item Styling */
 .task-item {
-  background: #fff;
-  border-radius: 5px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.task-item span {
-  flex-grow: 1;
-  text-align: left;
-}
-
-.task-item button {
-  background: red;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.task-item button:hover {
-  background: darkred;
-}
-
-input[type="text"] {
-  width: 70%;
-  padding: 8px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-button {
-  background: #007bff;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #0056b3;
-}
-
-.back-button {
-  position: absolute; /* Positioniere den Button relativ zum Bildschirm */
-  top: 20px; /* Abstand von oben */
-  left: 20px; /* Abstand von links */
-  background-color: #007bff; /* Standardfarbe */
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  z-index: 1000; /* Stellt sicher, dass der Button über anderen Elementen liegt */
-}
-
-.back-button:hover {
-  background-color: #0056b3; /* Hover-Farbe */
-}
-
-.task-input {
-  flex: 1; /* Eingabefeld nimmt den verfügbaren Platz ein */
-  height: 40px; /* Einheitliche Höhe */
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-sizing: border-box;
-}
-
-.task-form {
-  display: flex;
-  align-items: center; /* Zentriert die Elemente vertikal */ /* Abstand zwischen den Elementen */
-  width: 100%; /* Passt die Breite an den Container an */
-  max-width: 600px; /* Begrenze die maximale Breite */
-  margin-bottom: 20px; /* Abstand zur Aufgabenliste */
-  box-sizing: border-box;
-}
-
-.react-datepicker-input {
-  height: 40px; /* Gleiche Höhe wie das Eingabefeld */
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-sizing: border-box;
-  width: 100%; /* Passt die Breite an */
-  max-width: 200px; /* Optional: Begrenze die maximale Breite */
-  flex-shrink: 0; /* Verhindert, dass das Feld schrumpft */
-}
-
-.add-task-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 0px;
-}
-
-.add-task-button:hover {
-  background-color: #0056b3;
-}
-
-/* Light Mode (Standard) */
-body.light {
-  background-color: #ceb4b4;
-  color: #000;
-}
-
-.container.light {
-  background-color: #ceb4b4;
-  color: #000;
-}
-
-/* Dark Mode */
-body.dark {
-  background-color: #2a2a2b;
-  color: #fff;
-}
-
-.container.dark {
-  background-color: #2a2a2b;
-  color: #fff;
-}
-
-.task-item.dark {
-  background-color: #2a2a2b;
-  color: #000000;
-
-}
-/* Listenübersicht im Dark Mode */
-body.dark.list-selection {
-  background-color: #2a2a2b; /* Dunkler Hintergrund */
-  color: #fff; /* Helle Schriftfarbe */
- 
-}
-/* Buttons im Dark Mode */
-body.dark button {
-  background-color: #333; /* Dunkler Hintergrund */
-  color: #fff; /* Helle Schriftfarbe */
-  border: 1px solid #555; /* Optional: Rahmenfarbe */
-}
-
-body.dark button:hover {
-  background-color: #555; /* Etwas hellerer Hintergrund beim Hover */
-}
-/* Hinzufügen-Button im Dark Mode */
-body.dark .list-selection-add-button {
-  background-color: #444; /* Dunkler Hintergrund */
-  color: #fff; /* Helle Schriftfarbe */
-  border: 1px solid #666; /* Optional: Rahmenfarbe */
-}
-
-body.dark .list-selection-add-button:hover {
-  background-color: #666; /* Etwas hellerer Hintergrund beim Hover */
-}
-
-/* Löschen-Button im Dark Mode */
-body.dark .delete-button {
-  background-color: #ff4d4d; /* Rotes Design für den Dark Mode */
-  color: #fff;
-  border: none;
-}
-
-body.dark .delete-button:hover {
-  background-color: #ff1a1a; /* Helleres Rot beim Hover */
-}
-
-/* Girly Mode */
-body.girly {
-  background-color: #ffc0cb; /* Pinker Hintergrund */
-  color: #fff;
-}
-
-.container.girly {
-  background-color: #ffc0cb; /* Helles Pink */
-  color: #fff;
-}
-
-
-/* Button für den Moduswechsel */
-.theme-toggle-button {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 50%;
-  font-size: 20px;
-  cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.theme-toggle-button:hover {
-  background-color: #0056b3;
-}
-
-body.dark .theme-toggle-button {
-  background-color: #333;
-}
-
-body.girly .theme-toggle-button {
-  background-color: #ff69b4;
-}
-
-/* Stil für den Print-Button */
-.print-button {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background-color: #4CAF50; /* Grüner Hintergrund */
-  color: white;
-  border: none;
+  justify-content: space-between;
+  margin-bottom: 8px;
   padding: 10px;
-  border-radius: 50%;
-  font-size: 20px;
-  cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  background: #f5f5f5;
 }
 
-.print-button:hover {
-  background-color: #45a049; /* Etwas dunkleres Grün beim Hover */
-}
-body.girly .print-button {
-  background-color: #ff69b4; /* Helles Pink */
-  color: white;
+body.dark .task-item {
+  background: #333;
 }
 
-body.girly .print-button:hover {
-  background-color: #ff1493; /* Dunkleres Pink beim Hover */
-}
-/* Löschen-Button im Girly Mode */
-body.girly .delete-button {
-  background-color: #69050e; /* Helles Pink */
-  color: white;
-  border: none;
+body.girly .task-item {
+  background: #ffe0eb;
 }
 
-body.girly .delete-button:hover {
-  background-color: #ff1414; /* Dunkleres Pink beim Hover */
+.task-item.completed {
+  text-decoration: line-through;
+  opacity: 0.6;
 }
-body.dark h2 {
-  color: #acabab; /* Weiße Schriftfarbe für die Überschrift */
+
+/* Monatsansicht */
+.monthly-view {
+  margin-top: 40px;
+  padding-top: 10px;
+  border-top: 1px solid #ccc;
 }
-body.girly h2 {
-  color: #ff69b4; /* Helles Pink für die Überschrift */
-  text-shadow: 1px 1px 2px rgba(255, 105, 180, 0.5); /* Optional: Pinker Schatten */
+
+/* Responsive */
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #ccc;
+  }
 }

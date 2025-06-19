@@ -1,39 +1,34 @@
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import React from "react";
 
-const TaskForm = ({ newTask, setNewTask, newDeadline, setNewDeadline, addTask }) => {
-    const handleKeyDown = (e) => {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            addTask();
-        }
-    };
+const TaskForm = ({
+  newTask,
+  setNewTask,
+  newDeadline,
+  setNewDeadline,
+  addTask,
+}) => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    addTask();
+  };
 
-    return (
-        <div className="task-form">
-            <input
-                className="task-input"
-                value={newTask}
-                onChange={(e) => setNewTask(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="Neue Aufgabe"
-            />
-            <DatePicker
-                selected={newDeadline ? new Date(newDeadline) : null}
-                onChange={(date) => {
-                    const isoDate = date ? date.toISOString().split("T")[0] : "";
-                    setNewDeadline(isoDate);
-                }}
-                placeholderText="Deadline wählen"
-                dateFormat="yyyy-MM-dd"
-                className="react-datepicker-input"
-            />
-            <button className="add-task-button" onClick={addTask}>
-                +
-            </button>
-        </div>
-    );
+  return (
+    <form className="task-form" onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={newTask}
+        onChange={(e) => setNewTask(e.target.value)}
+        placeholder="Neue Aufgabe"
+        required
+      />
+      <input
+        type="date"
+        value={newDeadline}
+        onChange={(e) => setNewDeadline(e.target.value)}
+      />
+      <button type="submit">Hinzufügen</button>
+    </form>
+  );
 };
 
 export default TaskForm;
