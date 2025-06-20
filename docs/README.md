@@ -94,6 +94,9 @@ setup-db.sh	            SQLite-Setup für Tabellen & Defaults
 docker-build.sh	        Prod-Build mit Nginx erzeugen
 logs.sh	                Server-Logs überwachen
 
+
+sollte ein fehler aufkommen das ein port bereits in use ist
+- taskkill.exe /F /IM node.exe > /dev/null 2>&1 
 ---
 
 ## 📅 Deadline-Prüfung (Automatisch)
