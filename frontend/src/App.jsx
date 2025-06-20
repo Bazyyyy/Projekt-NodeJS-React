@@ -6,7 +6,7 @@ import MonthlyView from "./MonthlyView";
 import Print from "./Print";
 import "./App.css";
 
-const API_URL = "http://localhost:5000";
+const API_URL = "http://localhost:5050";
 
 const App = () => {
   const [lists, setLists] = useState([]);
