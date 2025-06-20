@@ -2,34 +2,32 @@ import React from "react";
 import "./MonthlyView.css";
 
 const MonthlyView = ({ tasks }) => {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth();
+  const currentMonth = new Date().getMonth();
+  const daysInMonth = new Date(new Date().getFullYear(), currentMonth + 1, 0).getDate();
 
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-  const getTasksForDay = (day) => {
-    const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(
-      day
-    ).padStart(2, "0")}`;
-    return tasks.filter((task) => task.deadline?.startsWith(dateStr));
-  };
+  const tasksByDay = tasks.reduce((acc, task) => {
+    if (task.deadline) {
+      const date = new Date(task.deadline);
+      if (date.getMonth() === currentMonth) {
+        const day = date.getDate();
+        acc[day] = (acc[day] || 0) + 1;
+      }
+    }
+    return acc;
+  }, {});
 
   return (
     <div className="monthly-view">
-      <h3>📅 Monatsübersicht ({today.toLocaleString("default", { month: "long" })})</h3>
-      <div className="calendar">
-        {[...Array(daysInMonth)].map((_, index) => {
-          const day = index + 1;
-          const dayTasks = getTasksForDay(day);
+      <h3>📅 Monatsübersicht (Juni)</h3>
+      <div className="calendar-grid">
+        {[...Array(daysInMonth)].map((_, i) => {
+          const day = i + 1;
           return (
             <div key={day} className="calendar-day">
-              <strong>{day}</strong>
-              {dayTasks.map((task) => (
-                <div key={task.id} className="calendar-task">
-                  {task.title}
-                </div>
-              ))}
+              <span>{day}</span>
+              {tasksByDay[day] && (
+                <span className="task-dot" title={`${tasksByDay[day]} Aufgabe(n)`}></span>
+              )}
             </div>
           );
         })}
