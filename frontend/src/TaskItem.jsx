@@ -1,21 +1,20 @@
-import React from 'react';
+import React from "react";
 import "./TaskItem.css";
 
-const TaskItem = ({ task, toggleTaskDone, deleteTask, isSelected }) => {
-  const today = new Date();
+const TaskItem = ({ task, toggleTaskDone, deleteTask }) => {
   const deadlineDate = task.deadline ? new Date(task.deadline) : null;
-
-  const isOverdue = deadlineDate && deadlineDate < today && !task.completed;
+  const today = new Date();
+  const isOverdue =
+    deadlineDate && !task.completed && deadlineDate < today.setHours(0, 0, 0, 0);
   const isSoon =
     deadlineDate &&
-    deadlineDate >= today &&
-    (deadlineDate - today) / (1000 * 60 * 60 * 24) < 3 &&
-    !task.completed;
+    !task.completed &&
+    deadlineDate <= today.setDate(today.getDate() + 2);
 
   return (
-    <li className={`task-item ${isSelected ? "selected-task" : ""}`}>
+    <li className={`task-item ${task.completed ? "completed" : ""}`}>
       <div className="task-item-content">
-        {/* Linker Bereich: Deadline */}
+        {/* Deadline-Anzeige */}
         {task.deadline && (
           <small
             className={`task-item-deadline ${
@@ -23,35 +22,30 @@ const TaskItem = ({ task, toggleTaskDone, deleteTask, isSelected }) => {
             }`}
           >
             {task.completed
-            ? `Erledigt am: ${task.deadline}`
-            : `Zu erledigen bis: ${task.deadline}`}
+              ? `Erledigt am: ${task.deadline}`
+              : `Zu erledigen bis: ${task.deadline}`}
             {isOverdue && !task.completed && " ⏰ Überfällig!"}
             {isSoon && !task.completed && " ⚠️ bald fällig"}
           </small>
         )}
 
-        {/* Mittlerer Bereich: Checkbox und Titel */}
-        <div className="task-item-left">
+        {/* Aufgabe mit Checkbox */}
+        <label className="task-item-left">
           <input
             type="checkbox"
             checked={task.completed}
             onChange={() => toggleTaskDone(task.id, task.completed)}
           />
-          <span
-            className={`task-item-title ${
-              task.completed ? "completed" : ""
-            }`}
-          >
-            {task.title}
-          </span>
-        </div>
+          <span className="task-item-title">{task.title}</span>
+        </label>
 
-        {/* Rechter Bereich: Delete-Button */}
+        {/* Delete-Button */}
         <button
           className="task-item-delete-button"
           onClick={() => deleteTask(task.id)}
+          title="Aufgabe löschen"
         >
-          -
+          🗑
         </button>
       </div>
     </li>

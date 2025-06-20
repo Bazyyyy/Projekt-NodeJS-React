@@ -1,41 +1,30 @@
-import React, { useRef } from "react";
+import React from "react";
 import "./print.css";
 
-function Print({ tasks, listName, listType }) {
-  const printRef = useRef();
-
+const Print = ({ tasks, listName, listType }) => {
   const handlePrint = () => {
     window.print();
   };
 
   return (
-    <div>
-      <div ref={printRef} className="print-content">
-        <div className="print-header">
-          <h2 className="print-title">{listName}</h2>
-        </div>
-        <ul className="print-list">
-          {tasks.map((task, idx) => (
-            <li
-              key={idx}
-              className={`print-list-item${task.completed ? " completed" : ""}`}
-            >
-              <span className="print-checkbox"></span>
-              <span className="print-task-title">{task.title}</span>
-              {task.deadline && (
-                <span className="print-deadline">
-                  Deadline: {new Date(task.deadline).toLocaleDateString()}
-                </span>
-              )}
+    <div className="print-section">
+      <button onClick={handlePrint} className="print-button">
+        Drucken 🖨️
+      </button>
+      <div className="print-preview print-hide">
+        <h2>{listName}</h2>
+        <h4>{listType}</h4>
+        <ul>
+          {tasks.map((task) => (
+            <li key={task.id}>
+              {task.completed ? "✔️ " : "❌ "}
+              {task.title}
             </li>
           ))}
         </ul>
       </div>
-      <button onClick={handlePrint} className="print-button" title="Drucken">
-        🖨️
-      </button>
     </div>
   );
-}
+};
 
 export default Print;

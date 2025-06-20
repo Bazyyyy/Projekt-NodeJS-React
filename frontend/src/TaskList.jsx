@@ -1,23 +1,19 @@
-import React from 'react';
-import TaskItem from './TaskItem';
+import React from "react";
+import TaskItem from "./TaskItem";
 
-const TaskList = ({ tasks, toggleTaskDone, deleteTask, selectedDate }) => {
-  if (!Array.isArray(tasks) || tasks.length === 0) {
-    return <p>Noch keine Aufgaben vorhanden.</p>;
-  }
-
+const TaskList = ({ tasks, toggleTaskDone, deleteTask }) => {
   return (
-    <ul>
-      {tasks.map(task => (
+    <div className="task-list">
+      {tasks.length === 0 && <p>Keine Aufgaben vorhanden.</p>}
+      {tasks.map((task) => (
         <TaskItem
           key={task.id}
           task={task}
           toggleTaskDone={toggleTaskDone}
           deleteTask={deleteTask}
-          isSelected={task.deadline === selectedDate}
         />
       ))}
-    </ul>
+    </div>
   );
 };
 

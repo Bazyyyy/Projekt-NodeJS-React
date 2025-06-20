@@ -1,62 +1,63 @@
+import React from "react";
 import "./ListSelection.css";
-import React from 'react';
-
 
 const ListSelection = ({
-    lists,
-    selectedListId,
-    setSelectedListId,
-    newListName,
-    setNewListName,
-    addList,
-    deleteList,
+  lists,
+  selectedListId,
+  setSelectedListId,
+  newListName,
+  setNewListName,
+  newListType,
+  setNewListType,
+  addList,
+  deleteList,
 }) => {
-
-    const handleKeyDown = (e) => {
-        if (e.key === "Enter") {
-            handleAddList();
-        }
-    };
-
-    const handleAddList = () => {
-        addList();
-    };
-
-    return (
-        <div className="list-selection-container">
-            <input
-                className="list-selection-input"
-                value={newListName}
-                onChange={(e) => setNewListName(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="Neue Liste"
-            />
-     
+  return (
+    <div className="list-selection-container">
+      <h2>📁 Listen</h2>
+      <ul className="list-items">
+        {lists.map((list) => (
+          <li
+            key={list.id}
+            className={`list-item ${
+              selectedListId === list.id ? "active" : ""
+            }`}
+            onClick={() => setSelectedListId(list.id)}
+          >
+            {list.title}
             <button
-                className="list-selection-add-button"
-                onClick={handleAddList}
+              className="delete-button"
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteList(list.id);
+              }}
             >
-                Liste hinzufügen
+              ❌
             </button>
+          </li>
+        ))}
+      </ul>
 
-            {lists.map((list) => (
-                <div key={list.id} className="list-selection-item">
-                    <button
-                        className={`select-button ${
-                            selectedListId === list.id ? "selected" : ""
-                        }`}
-                        onClick={() => setSelectedListId(list.id)}
-                    >
-                        {list.title || "(Ohne Titel)"}
-                    </button>
-                    <button
-                        className="delete-button"
-                        onClick={() => deleteList(list.id)}
-                    >-</button>
-                </div>
-            ))}
-        </div>
-    );
+      <div className="add-list-form">
+        <input
+          type="text"
+          placeholder="Neue Liste"
+          value={newListName}
+          onChange={(e) => setNewListName(e.target.value)}
+        />
+        <select
+          value={newListType}
+          onChange={(e) => setNewListType(e.target.value)}
+        >
+          <option value="">Typ wählen</option>
+          <option value="Einfache To-Do-Liste">Einfache To-Do-Liste</option>
+          <option value="Einkaufsliste">🛒 Einkaufsliste</option>
+          <option value="Tägliche Aufgaben">📅 Tägliche Aufgaben</option>
+        </select>
+        <button onClick={addList}>➕ Hinzufügen</button>
+      </div>
+    </div>
+  );
 };
 
 export default ListSelection;
