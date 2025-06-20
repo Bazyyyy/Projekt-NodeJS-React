@@ -1,94 +1,122 @@
+# 📝 TodoApp: Aufgabenliste mit React, Vite & Electron
 
-
-# TodoApp: Aufgabenliste mit React, Vite & Electron
-
-Ein Aufgabenplaner mit Web- und Desktop-Unterstützung. Gebaut mit React 18, Vite, Docker und bonus Electron.
+Ein Aufgabenplaner mit Web- und Desktop-Unterstützung. Gebaut mit React 18, Vite, Docker, SQLite — und optional Electron.
 
 ---
 
-##  Features
+## 🚀 Features
 
-- React 18 + Vite Frontend
-- Electron für Desktop-Nutzung (Windows/macOS/Linux)
-- Dockerisiertes Web-Deployment mit Nginx
-- Lightweight, lokal & Cloud-ready
+- ✅ React 18 + Vite Frontend
+- 🖥️ Electron: Desktop-Support (Windows/macOS/Linux)
+- 📦 Dockerisiert mit Nginx-Server für Web-Deployment
+- 💾 SQLite als lokale Datenbank
+- ⏰ Tägliche Deadline-Prüfung via `node-cron`
+- 🧠 Terminalausgabe bei überfälligen Aufgaben
 
 ---
 
-## Voraussetzungen
+## 🔧 Voraussetzungen
 
 - [Node.js (v18)](https://nodejs.org/)
 - [npm](https://www.npmjs.com/)
 - [Docker](https://www.docker.com/) (für Build & Deployment)
-- [Electron](https://www.electronjs.org/) (optional, lokal)
-- [Morgan]
+- [Electron](https://www.electronjs.org/) _(optional)_
+- [vitest] for testing
+- 📦 Globale Dependencies im Backend:
+
+  ```bash
+  npm install express sqlite3 cors node-cron morgan
 
 ---
 
-## Lokale Entwicklung (Web)
+## ⚙️ Lokale Entwicklung
 
-```bash
-cd frontend
-npm install
-npm run dev
-Läuft auf: http://localhost:5173
+🖥️ Backend
 
-bash
-cd backend/todo-backend
-node server.js
-starten der datenbank und des backends
+- cd backend/todo-backend
+- node server.js
 
-Desktop (Electron)
-Start im Dev-Modus:
-Wichtig: vite dev muss im Hintergrund laufen
+💻 Frontend (React)
 
+- cd frontend
+- npm install
+- npm run dev
 
-bash
-npm run dev          # Dev-Server starten
-npm run start        # Electron starten (lädt http://localhost:5173)
-🔒 Start im Build-Modus:
-App bundlen:
+🖥️ Electron (optional)
 
-bash
-npm run build
-In electron.mjs muss stehen:
+Entwicklung/Dev-Modus:
+- npm run dev         
+- npm run start      
 
-js
+Build-Modus:
+- npm run build       
+
+> In electron.mjs muss stehen:
+
 win.loadFile('dist/index.html')
-Electron starten:
+
+Dann:
 
 bash
 npm run start
-Docker (für Web-Deployment)
-Builden:
-bash
+
+---
+
+## 🐳 Docker-Deployment
+
 docker build -t axinass/frontend:prod .
-Starten:
-bash
 docker run -it -p 8080:80 axinass/frontend:prod
-App im Browser: http://localhost:8080
+> App unter: http://localhost:8080
 
-Troubleshooting
-Fehler	Lösung
-react-dom/client not found	npm install react@18 react-dom@18
-axios oder react-datepicker fehlt	npm install axios react-datepicker
-Print.css not found in Docker	Groß-/Kleinschreibung! → print.css vs Print.css
-Electron "Cannot find module"	electron.mjs fehlt oder "main" in package.json falsch
-ERR_CONNECTION_REFUSED (Electron)	npm run dev nicht gestartet → Dev-Server fehlt
+---
+
+## 🧪 Troubleshooting
+Fehler	                                            Lösung
+react-dom/client not found	                        npm install react@18 react-dom@18
+axios oder react-datepicker fehlt	                npm install axios react-datepicker
+Print.css not found in Docker	                    Auf Groß-/Kleinschreibung achten: print.css vs Print.css
+Electron „Cannot find module“	                    electron.mjs fehlt oder "main" in package.json prüfen
+ERR_CONNECTION_REFUSED (Electron)	                npm run dev vergessen (Vite muss laufen)
+
+---
+
+## 🛠️ Dev-Skripte (/scripts)
+
+chmod +x scripts/dev.sh
+./scripts/dev.sh
+
+bei nicht erkannten scripts:
+dos2unix
 
 
+Script	                Beschreibung
+dev.sh	                Startet Frontend + Backend im Dev-Modus
+run-backend.sh	        Nur Backend starten
+run-frontend.sh	        Nur Vite-Frontend starten
+setup-db.sh	            SQLite-Setup für Tabellen & Defaults
+docker-build.sh	        Prod-Build mit Nginx erzeugen
+logs.sh	                Server-Logs überwachen
 
-scripts/
-├── dev.sh
-├── run-backend.sh
-├── run-frontend.sh
-├── setup-db.sh
-├── logs.sh
-└── docker-build.sh
 
+sollte ein fehler aufkommen das ein port bereits in use ist
+- taskkill.exe /F /IM node.exe > /dev/null 2>&1 
+---
 
-starte script mit:
-    chmod +x scripts/dev.sh
-    ./scripts/dev.sh
+## 📅 Deadline-Prüfung (Automatisch)
+Via node-cron: jeden Tag um 00:00
 
-WICHTIG IN UBUNTU
+Erkennt deadline < today bei unvollständigen Tasks
+
+Ausgabe im Terminal z. B.:
+
+⏰ 2 überfällige Aufgabe(n):
+🔴 [7] Steuer machen (Deadline: 2025-06-17)
+
+---
+
+## ☝️ Hinweise (Ubuntu)
+Achte auf Dateiende-Format (LF, nicht CRLF)
+
+Bei bash: ./dev.sh: cannot execute → dos2unix scripts/dev.sh
+
+Im WSL: localhost kann sich auf Windows oder Ubuntu beziehen → IP prüfen mit ip addr
