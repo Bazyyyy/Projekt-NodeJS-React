@@ -85,6 +85,9 @@ ERR_CONNECTION_REFUSED (Electron)	                npm run dev vergessen (Vite mu
 chmod +x scripts/dev.sh
 ./scripts/dev.sh
 
+bei nicht erkannten scripts:
+dos2unix
+
 
 Script	                Beschreibung
 dev.sh	                Startet Frontend + Backend im Dev-Modus
