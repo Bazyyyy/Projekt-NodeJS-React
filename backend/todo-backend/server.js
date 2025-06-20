@@ -102,6 +102,9 @@ app.get("/lists", (req, res) => {
     });
 });
 
+app.get('/api/health', (req, res) => {
+    res.status(200).send('OK');
+});
 
 app.post("/lists", (req, res) => {
     const { title, type } = req.body;
