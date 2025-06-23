@@ -30,6 +30,7 @@ while true; do
 
     if [[ "$STATUS" == "DOWN" ]]; then
         echo " $(date +"%H:%M:%S") - Mindestens ein Dienst ist offline."
+        ./scripts/slack_notify.sh "$TIMESTAMP: Mindestens ein Dienst ist offline."
     fi
 
     sleep 60
