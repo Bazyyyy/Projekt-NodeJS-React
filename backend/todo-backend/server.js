@@ -5,6 +5,25 @@ const cron = require("node-cron");
 const app = express();
 const fs = require("fs");
 const morgan = require("morgan");
+const multer = require("multer");
+const path = require("path");
+const uploadDir = "uploads";
+fs.mkdirSync(uploadDir, {recursive: true});
+
+app.use("/uploads", express.static("uploads"));
+
+const storage = multer.diskStorage({
+    destination: (_, __, cb) => cb(null, uploadDir),
+    filename: (_, file, cb) => {
+        const unique = Date.now() + "-" + Math.round(Math.random() * 1e9);
+        cb(null, unique + path.extname(file.originalname));
+    },
+});
+
+const upload = multer({
+    storage,
+    limits: { fileSize: 10 * 1024 * 1024 },
+});
 
 function checkOverdueTasks() {
   const today = new Date().toISOString().split("T")[0];
@@ -69,6 +88,19 @@ db.run("ALTER TABLE tasks ADD COLUMN deadline TEXT", (err) => {
 });
 
 db.run(`
+    CREATE TABLE IF NOT EXISTS attachments (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        task_id INTEGER NOT NULL,
+        file_name TEXT NOT NULL,
+        file_type TEXT,
+        file_size INTEGER,
+        file_path TEXT NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (task_id) REFERENCES tasks (id) ON DELETE CASCADE
+    )
+`);
+
+db.run(`
     CREATE TABLE IF NOT EXISTS lists (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
@@ -128,6 +160,48 @@ app.post("/lists", (req, res) => {
             });
         }
     );
+});
+
+app.post("/tasks/:taskId/attachments", upload.single("file"), (req, res) => {
+  const { taskId } = req.params;
+
+  console.log("Upload start für Task:", taskId);
+
+  if (!req.file) {
+    return res.status(400).json({ error: "Keine Datei hochgeladen." });
+  }
+
+  const { originalname, mimetype, size, filename } = req.file;
+  const filePath = path.join(uploadDir, filename);
+
+  db.run(
+    `INSERT INTO attachments (task_id, file_name, file_type, file_size, file_path)
+     VALUES (?, ?, ?, ?, ?)`,
+    [taskId, originalname, mimetype, size, filePath],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+
+      return res.status(200).json({
+        id: this.lastID,
+        task_id: taskId,
+        name: originalname,
+        type: mimetype,
+        size,
+        path: `/uploads/${filename}`,
+      });
+    }
+  );
+});
+
+
+app.get("/tasks/:taskId/attachments", (req, res) => {
+    const {taskId} = req.params;
+    db.all("SELECT * FROM attachments WHERE task_id = ?", [taskId], (err, rows) => {
+       if (err) return res.status(500).json({ error: err.message});
+       res.json(rows); 
+    });
 });
 
 app.get("/lists/:listId/tasks", (req, res) => {

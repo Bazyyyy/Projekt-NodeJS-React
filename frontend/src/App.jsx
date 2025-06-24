@@ -5,6 +5,8 @@ import TaskList from "./TaskList";
 import MonthlyView from "./MonthlyView";
 import Print from "./Print";
 import "./App.css";
+import AttachmentUpload from "./AttachmentUpload";
+import AttachmentList from "./AttachmentList";
 
 const API_URL = "http://localhost:5050";
 
@@ -146,6 +148,19 @@ const App = () => {
               toggleTaskDone={toggleTaskDone}
               deleteTask={deleteTask}
             />
+
+            {tasks.length > 0 && (
+              <div style={{ marginTop: "lem" }}>
+                <h3>Datei hinzufügen</h3>
+                <AttachmentUpload
+                  taskId={tasks[0]?.id}
+                  onUploadSuccess={(newAttachment) => {
+                    console.log("Upload erfolgreich:", newAttachment);
+                  }}
+                  />
+                  <AttachmentList taskId={tasks[0]?.id}/>
+              </div>
+            )}
             <MonthlyView tasks={tasks} />
             <Print tasks={tasks} listName={currentList?.title || "Liste"} />
           </>
