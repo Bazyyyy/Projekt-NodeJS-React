@@ -17,7 +17,10 @@ const MonthlyView = ({ tasks }) => {
 
   return (
     <div className="monthly-view">
-      <h3>📅 Monatsübersicht ({today.toLocaleString("default", { month: "long" })})</h3>
+      <h3>
+        📅 Monatsübersicht (
+        {today.toLocaleString("default", { month: "long" })})
+      </h3>
       <div className="calendar">
         {[...Array(daysInMonth)].map((_, index) => {
           const day = index + 1;

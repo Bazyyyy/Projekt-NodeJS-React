@@ -35,3 +35,10 @@ body.dark .monthly-task {
   background-color: #3a3a3a;
   border-color: #555;
 }
+
+/* ✅ Monatsübersicht im Druck ausblenden */
+@media print {
+  .monthly-view {
+    display: none !important;
+  }
+}

@@ -16,3 +16,57 @@ body {
   height: 100vh;
   overflow: hidden;
 }
+
+/* ✅ Druckansicht korrigieren */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  #root {
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* Optional: nur die Druckvorschau zeigen */
+  .app-container,
+  .theme-toggle-button,
+  .list-selection-container,
+  .task-form,
+  .monthly-calendar,
+  .progress-bar-container,
+  .print-button,
+  button,
+  input,
+  select {
+    display: none !important;
+  }
+
+  .print-preview {
+    display: block !important;
+    margin: 20mm;
+    font-size: 12pt;
+  }
+
+  .print-preview h2 {
+    font-size: 18pt;
+    margin-bottom: 10px;
+  }
+
+  .print-preview ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .print-preview li {
+    padding: 6px 0;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .print-preview li.done {
+    text-decoration: line-through;
+    color: #888;
+  }
+}

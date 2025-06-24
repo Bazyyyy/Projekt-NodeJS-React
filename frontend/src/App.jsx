@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import ListSelection from "./ListSelection";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
 import MonthlyView from "./MonthlyView";
-import Print from "./Print";
+import PrintPage from "./PrintPage";
 import "./App.css";
 
 const API_URL = "http://localhost:5050";
 
-const App = () => {
+/* ⭐ Hauptanwendung */
+const MainApp = () => {
   const [lists, setLists] = useState([]);
   const [selectedListId, setSelectedListId] = useState(null);
   const [tasks, setTasks] = useState([]);
@@ -17,8 +25,11 @@ const App = () => {
   const [newListName, setNewListName] = useState("");
   const [theme, setTheme] = useState("light");
 
+  const navigate = useNavigate();
+
   const toggleTheme = () => {
-    const next = theme === "light" ? "dark" : theme === "dark" ? "girly" : "light";
+    const next =
+      theme === "light" ? "dark" : theme === "dark" ? "girly" : "light";
     setTheme(next);
   };
 
@@ -107,7 +118,6 @@ const App = () => {
         deleteList={deleteList}
         theme={theme}
       />
-
       <div className="main-content">
         <h1>To-Do</h1>
         <button className="theme-toggle-button" onClick={toggleTheme}>
@@ -133,7 +143,6 @@ const App = () => {
                 </small>
               </div>
             )}
-
             <TaskForm
               newTask={newTask}
               setNewTask={setNewTask}
@@ -147,12 +156,34 @@ const App = () => {
               deleteTask={deleteTask}
             />
             <MonthlyView tasks={tasks} />
-            <Print tasks={tasks} listName={currentList?.title || "Liste"} />
+            <button
+              className="print-button"
+              onClick={() =>
+                navigate("/print", {
+                  state: {
+                    tasks,
+                    listName: currentList?.title,
+                    listType: currentList?.type,
+                  },
+                })
+              }
+            >
+              Drucken 🖨️
+            </button>
           </>
         )}
       </div>
     </div>
   );
 };
+
+const App = () => (
+  <Router>
+    <Routes>
+      <Route path="/" element={<MainApp />} />
+      <Route path="/print" element={<PrintPage />} />
+    </Routes>
+  </Router>
+);
 
 export default App;
