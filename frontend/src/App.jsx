@@ -158,7 +158,7 @@ const App = () => {
                     console.log("Upload erfolgreich:", newAttachment);
                   }}
                   />
-                  <AttachmentList taskId={tasks[0]?.id}/>
+                  
               </div>
             )}
             <MonthlyView tasks={tasks} />

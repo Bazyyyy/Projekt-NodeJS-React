@@ -172,7 +172,7 @@ app.post("/tasks/:taskId/attachments", upload.single("file"), (req, res) => {
   }
 
   const { originalname, mimetype, size, filename } = req.file;
-  const filePath = path.join(uploadDir, filename);
+  const filePath = `/uploads/${filename}`;
 
   db.run(
     `INSERT INTO attachments (task_id, file_name, file_type, file_size, file_path)
