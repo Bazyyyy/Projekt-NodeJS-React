@@ -160,14 +160,7 @@ const MainApp = () => {
 
             {tasks.length > 0 && (
               <div style={{ marginTop: "lem" }}>
-                <h3>Datei hinzufügen</h3>
-                <AttachmentUpload
-                  taskId={tasks[0]?.id}
-                  onUploadSuccess={(newAttachment) => {
-                    console.log("Upload erfolgreich:", newAttachment);
-                  }}
-                  />
-                  
+                            
               </div>
             )}
             <MonthlyView tasks={tasks} />

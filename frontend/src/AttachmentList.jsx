@@ -5,108 +5,125 @@ function AttachmentList({ taskId }) {
   const [previewUrl, setPreviewUrl] = useState(null);
 
   useEffect(() => {
-  console.log("Vorschau-URL:", previewUrl);
-}, [previewUrl]);
-
-
-  useEffect(() => {
     fetch(`http://localhost:5050/tasks/${taskId}/attachments`)
       .then((res) => res.json())
-      .then((data) => {
-        console.log("Geladene Anhänge:", data);
-        setAttachments(data);
-      })
-      .catch((err) => console.error("Fehler beim Laden der Anhänge:", err));
+      .then(setAttachments)
+      .catch((err) =>
+        console.error("Fehler beim Laden der Anhänge:", err)
+      );
   }, [taskId]);
+
+  const deleteAttachment = async (attachmentId) => {
+    await fetch(`http://localhost:5050/attachments/${attachmentId}`, {
+      method: "DELETE",
+    });
+    setAttachments((prev) =>
+      prev.filter((att) => att.id !== attachmentId)
+    );
+  };
 
   if (attachments.length === 0) return null;
 
   return (
     <>
-      <ul style={{ marginTop: "0.5rem" }}>
+      <ul
+        style={{
+          listStyle: "none",
+          padding: 0,
+          margin: 0,
+          display: "flex",
+          gap: "0.3rem",
+          flexWrap: "wrap",
+        }}
+      >
         {attachments.map((att) => {
           const fileType = att.type || att.file_type || "";
           const fileName = att.name || att.file_name || "Unbenannt";
-          const isImage = 
-            att.type?.startsWith("image/") ||
-            att.name?.match(/\.(jpg|jpeg|png|gif|webp)$/i) ||
-            att.file_name?.match(/\.(jpg|jpeg|png|gif|gif|webp)$/i);
-          const isPDF = fileType === "application/pdf" || fileName.toLowerCase().endsWith(".pdf");
+          const isImage =
+            fileType.startsWith("image/") ||
+            fileName.match(/\.(jpg|jpeg|png|gif|webp)$/i);
+          const isPDF =
+            fileType === "application/pdf" ||
+            fileName.toLowerCase().endsWith(".pdf");
           const canPreview = isImage || isPDF;
+          const path = att.path || att.file_path;
 
           return (
-            <li key={att.id}>
-              📎 <strong>{fileName}</strong>{" "}
+            <li
+              key={att.id}
+              className="attachment-item"
+              title={fileName}
+            >
               {canPreview ? (
                 <button
-                  onClick={() => {
-                  const path = att.path || att.file_path;
-                  if (path) setPreviewUrl(`http://localhost:5050${path}`);
-                  else console.warn("Kein gültiger Pfad vorhanden für:", att);
-                    }}
-                    >
-                    🔍 Vorschau
+                  onClick={() => path && setPreviewUrl(`http://localhost:5050${path}`)}
+                  style={{ fontSize: "0.7rem", background: "none", border: "none", cursor: "pointer" }}
+                >
+                  🔍
                 </button>
-
               ) : (
                 <a
-                  href={`http://localhost:5050${att.path}`}
+                  href={`http://localhost:5050${path}`}
                   download
                   rel="noopener noreferrer"
-                  style={{ marginLeft: "1rem", color: "blue" }}
+                  style={{ fontSize: "0.7rem", color: "#007bff", textDecoration: "none" }}
                 >
-                  ⬇️ Herunterladen
+                  ⬇️
                 </a>
               )}
+              <button
+                onClick={() => deleteAttachment(att.id)}
+                style={{ fontSize: "0.7rem", background: "none", border: "none", color: "crimson", cursor: "pointer" }}
+              >
+                ❌
+              </button>
             </li>
           );
         })}
       </ul>
-      {previewUrl && (
-  <div
-    onClick={() => setPreviewUrl(null)}
-    style={{
-      position: "fixed",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      backgroundColor: "rgba(0, 0, 0, 0.8)",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      zIndex: 9999,
-      cursor: "zoom-out",
-    }}
-  >
-    {previewUrl.toLowerCase().endsWith(".pdf") ? (
-      <iframe
-        src={previewUrl}
-        style={{
-          width: "90vw",
-          height: "90vh",
-          border: "none",
-          borderRadius: "8px",
-          boxShadow: "0 0 20px black",
-          backgroundColor: "white",
-        }}
-        title="PDF-Vorschau"
-      />
-    ) : (
-      <img
-        src={previewUrl}
-        alt="Bildvorschau"
-        style={{
-          maxWidth: "90vw",
-          maxHeight: "90vh",
-          borderRadius: "8px",
-          boxShadow: "0 0 20px black",
-        }}
-      />
-    )}
-  </div>
-)}
 
+      {previewUrl && (
+        <div
+          onClick={() => setPreviewUrl(null)}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0,0,0,0.8)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 9999,
+            cursor: "zoom-out",
+          }}
+        >
+          {previewUrl.toLowerCase().endsWith(".pdf") ? (
+            <iframe
+              src={previewUrl}
+              title="PDF-Vorschau"
+              style={{
+                width: "85vw",
+                height: "85vh",
+                border: "none",
+                borderRadius: "8px",
+                backgroundColor: "white",
+              }}
+            />
+          ) : (
+            <img
+              src={previewUrl}
+              alt="Bildvorschau"
+              style={{
+                maxWidth: "85vw",
+                maxHeight: "85vh",
+                borderRadius: "8px",
+              }}
+            />
+          )}
+        </div>
+      )}
     </>
   );
 }
