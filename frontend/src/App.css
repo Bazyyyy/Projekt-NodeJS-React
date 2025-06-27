@@ -1,18 +1,17 @@
-/* Globales Layout */
+/* === Global Layout === */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
   transition: background 0.3s, color 0.3s;
 }
 
-/* Layoutstruktur mit Sidebar */
 .app-container {
   display: flex;
   min-height: 100vh;
   width: 100%;
 }
 
-/* === THEMES === */
+/* === Themes (nur für Hauptbereich, nicht Sidebar) === */
 body.light {
   background: #f9f9f9;
   color: #333;
@@ -28,33 +27,55 @@ body.girly {
   color: #880e4f;
 }
 
-/* Sidebar (ListSelection) */
+/* === Sidebar bleibt immer gleich === */
 .sidebar {
-  width: 250px;
-  padding: 20px;
-  background: #f0f0f0;
+  width: 240px;
+  padding: 00px;
+  background: #f0f0f0 !important;
+  color: #333 !important;
   border-right: 1px solid #ccc;
-  overflow-y: auto;
+  height: 100vh;
+  box-sizing: border-box;
+  transition: transform 0.3s ease;
 }
 
-body.dark .sidebar {
-  background: #2e2e2e;
-  border-color: #444;
+.sidebar-hidden {
+  transform: translateX(-100%);
+  position: absolute;
+  z-index: 1000;
+  background: #f0f0f0;
+  height: 100vh;
 }
 
-body.girly .sidebar {
-  background: #fff0f5;
-  border-color: #ffb6c1;
+/* === Sidebar Toggle Button === */
+.sidebar-toggle-button {
+  position: absolute;
+  top: 1200px;
+  left: 10px;
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  z-index: 1100;
 }
 
-/* Hauptbereich */
+/* === Main Content === */
 .main-content {
   flex: 1;
   padding: 40px;
   overflow-y: auto;
 }
 
-/* Buttons */
+/* === Theme Toggle Button === */
+.theme-toggle-button {
+  float: right;
+  font-size: 1.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* === Buttons === */
 button {
   padding: 8px 16px;
   margin: 5px;
@@ -64,15 +85,7 @@ button {
   font-weight: bold;
 }
 
-.theme-toggle-button {
-  float: right;
-  font-size: 1.2rem;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-}
-
-/* Input-Styling */
+/* === Inputs === */
 input,
 select {
   padding: 8px;
@@ -81,7 +94,7 @@ select {
   border-radius: 4px;
 }
 
-/* Fortschrittsbalken */
+/* === Progress Bar === */
 .progress-bar-container {
   margin: 10px 0;
 }
@@ -99,7 +112,7 @@ select {
   transition: width 0.3s;
 }
 
-/* Task-Item Styling */
+/* === Task Item === */
 .task-item {
   display: flex;
   align-items: center;
@@ -129,30 +142,14 @@ body.girly .task-item {
   opacity: 0.6;
 }
 
-/* Monatsansicht */
+/* === Monthly View === */
 .monthly-view {
   margin-top: 40px;
   padding-top: 10px;
   border-top: 1px solid #ccc;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .app-container {
-    flex-direction: column;
-  }
-
-  .sidebar {
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid #ccc;
-  }
-}
-.task-item-row > .media-attachments {
-  margin-left: auto;
-}
-
-
+/* === Task Item Row Styling === */
 .task-item-row {
   display: flex;
   align-items: center;
@@ -213,3 +210,23 @@ body.girly .task-item {
   color: orange;
 }
 
+/* === Responsive === */
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #ccc;
+    transform: none !important;
+    position: relative;
+    height: auto;
+  }
+
+  .sidebar-hidden {
+    position: relative;
+    transform: translateX(-100%);
+  }
+}

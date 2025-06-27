@@ -4,7 +4,6 @@ import {
   Routes,
   Route,
   useNavigate,
-  useLocation,
 } from "react-router-dom";
 import ListSelection from "./ListSelection";
 import TaskForm from "./TaskForm";
@@ -17,7 +16,6 @@ import AttachmentList from "./AttachmentList";
 
 const API_URL = "http://localhost:5050";
 
-/* ⭐ Hauptanwendung */
 const MainApp = () => {
   const [lists, setLists] = useState([]);
   const [selectedListId, setSelectedListId] = useState(null);
@@ -26,6 +24,7 @@ const MainApp = () => {
   const [newDeadline, setNewDeadline] = useState("");
   const [newListName, setNewListName] = useState("");
   const [theme, setTheme] = useState("light");
+  const [sidebarVisible, setSidebarVisible] = useState(true);
 
   const navigate = useNavigate();
 
@@ -33,6 +32,10 @@ const MainApp = () => {
     const next =
       theme === "light" ? "dark" : theme === "dark" ? "girly" : "light";
     setTheme(next);
+  };
+
+  const toggleSidebar = () => {
+    setSidebarVisible(!sidebarVisible);
   };
 
   useEffect(() => {
@@ -110,16 +113,27 @@ const MainApp = () => {
 
   return (
     <div className={`app-container ${theme}`}>
-      <ListSelection
-        lists={lists}
-        selectedListId={selectedListId}
-        setSelectedListId={setSelectedListId}
-        newListName={newListName}
-        setNewListName={setNewListName}
-        addList={addList}
-        deleteList={deleteList}
-        theme={theme}
-      />
+      {/* Sidebar Toggle Button */}
+      <button className="sidebar-toggle-button" onClick={toggleSidebar}>
+        ☰
+      </button>
+
+      {/* Sidebar */}
+      {sidebarVisible && (
+        <div className="sidebar">
+          <ListSelection
+            lists={lists}
+            selectedListId={selectedListId}
+            setSelectedListId={setSelectedListId}
+            newListName={newListName}
+            setNewListName={setNewListName}
+            addList={addList}
+            deleteList={deleteList}
+            theme={theme}
+          />
+        </div>
+      )}
+
       <div className="main-content">
         <h1>To-Do</h1>
         <button className="theme-toggle-button" onClick={toggleTheme}>
@@ -145,6 +159,7 @@ const MainApp = () => {
                 </small>
               </div>
             )}
+
             <TaskForm
               newTask={newTask}
               setNewTask={setNewTask}
@@ -157,13 +172,8 @@ const MainApp = () => {
               toggleTaskDone={toggleTaskDone}
               deleteTask={deleteTask}
             />
-
-            {tasks.length > 0 && (
-              <div style={{ marginTop: "lem" }}>
-                            
-              </div>
-            )}
             <MonthlyView tasks={tasks} />
+
             <button
               className="print-button"
               onClick={() =>
