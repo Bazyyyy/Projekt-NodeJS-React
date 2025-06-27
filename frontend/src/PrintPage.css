@@ -1,0 +1,118 @@
+/* Gesamte Druckseite im Notizblock-Stil */
+.print-container {
+  width: 100vw;
+  min-height: 100vh;
+  margin: 0;
+  padding: 3rem;
+  background: #fffbe6;
+  color: #333;
+  font-family: 'Caveat', cursive;
+  font-size: 1.3rem;
+  line-height: 1.8;
+  box-sizing: border-box;
+}
+
+/* Überschrift mittig & unterstrichen */
+.print-container h1 {
+  text-align: center;
+  font-size: 2.2rem;
+  text-decoration: underline;
+  margin-bottom: 1.5rem;
+  color: #2a2a2a;
+}
+
+/* Listentyp ebenfalls mittig */
+.print-container p {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #444;
+  margin-bottom: 2rem;
+}
+
+/* Aufgabenliste ohne Bullet, aber mit Checkbox */
+.print-task-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Aufgaben als handgeschriebene Punkte mit Kästchen */
+.print-task-list li {
+  position: relative;
+  padding-left: 2rem;
+  text-indent: -2rem;
+  margin-bottom: 0.8rem;
+}
+
+/* Offene Aufgaben: leeres Kästchen */
+.print-task-list li:not(.done)::before {
+  content: "☐ ";
+  position: absolute;
+  left: 0;
+  font-size: 1.1rem;
+}
+
+/* Erledigte Aufgaben: Kästchen mit Haken */
+.print-task-list li.done::before {
+  content: "☑ ";
+  position: absolute;
+  left: 0;
+  color: #4caf50;
+  font-weight: bold;
+}
+
+/* Erledigt-Stil zusätzlich leicht ausgegraut */
+.print-task-list li.done {
+  color: #999;
+  text-decoration: line-through;
+}
+
+/* Deadlines in rot-orange, kursiv */
+.deadline {
+  font-size: 1rem;
+  color: #e65100;
+  margin-left: 1rem;
+  font-style: italic;
+}
+
+/* Button & Steuerklassen */
+.print-button,
+.back-button {
+  display: inline-block;
+  padding: 0.6rem 1.4rem;
+  font-size: 1rem;
+  margin: 2rem 0.5rem 0 0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  background: linear-gradient(135deg, #ff9800, #f44336);
+}
+
+/* Sichtbarkeit kontrollieren */
+.no-print {
+  display: block;
+}
+.print-only {
+  display: none;
+}
+
+@media print {
+  .no-print,
+  .print-button,
+  .back-button {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  .print-container {
+    box-shadow: none;
+    background: #fffbe6;
+    color: black;
+    border: none;
+    padding: 2rem;
+  }
+}

@@ -77,3 +77,10 @@
 .add-list-form button:hover {
   background-color: #0056b3;
 }
+
+/* ✅ Sidebar bei Druck ausblenden */
+@media print {
+  .list-selection-container {
+    display: none !important;
+  }
+}

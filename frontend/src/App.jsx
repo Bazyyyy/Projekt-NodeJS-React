@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from "react-router-dom";
 import ListSelection from "./ListSelection";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
 import MonthlyView from "./MonthlyView";
-import Print from "./Print";
+import PrintPage from "./PrintPage";
 import "./App.css";
+import AttachmentUpload from "./AttachmentUpload";
+import AttachmentList from "./AttachmentList";
 
 const API_URL = "http://localhost:5050";
 
-const App = () => {
+const MainApp = () => {
   const [lists, setLists] = useState([]);
   const [selectedListId, setSelectedListId] = useState(null);
   const [tasks, setTasks] = useState([]);
@@ -16,10 +24,18 @@ const App = () => {
   const [newDeadline, setNewDeadline] = useState("");
   const [newListName, setNewListName] = useState("");
   const [theme, setTheme] = useState("light");
+  const [sidebarVisible, setSidebarVisible] = useState(true);
+
+  const navigate = useNavigate();
 
   const toggleTheme = () => {
-    const next = theme === "light" ? "dark" : theme === "dark" ? "girly" : "light";
+    const next =
+      theme === "light" ? "dark" : theme === "dark" ? "girly" : "light";
     setTheme(next);
+  };
+
+  const toggleSidebar = () => {
+    setSidebarVisible(!sidebarVisible);
   };
 
   useEffect(() => {
@@ -97,16 +113,26 @@ const App = () => {
 
   return (
     <div className={`app-container ${theme}`}>
-      <ListSelection
-        lists={lists}
-        selectedListId={selectedListId}
-        setSelectedListId={setSelectedListId}
-        newListName={newListName}
-        setNewListName={setNewListName}
-        addList={addList}
-        deleteList={deleteList}
-        theme={theme}
-      />
+      {/* Sidebar Toggle Button */}
+      <button className="sidebar-toggle-button" onClick={toggleSidebar}>
+        ☰
+      </button>
+
+      {/* Sidebar */}
+      {sidebarVisible && (
+        <div className="sidebar">
+          <ListSelection
+            lists={lists}
+            selectedListId={selectedListId}
+            setSelectedListId={setSelectedListId}
+            newListName={newListName}
+            setNewListName={setNewListName}
+            addList={addList}
+            deleteList={deleteList}
+            theme={theme}
+          />
+        </div>
+      )}
 
       <div className="main-content">
         <h1>To-Do</h1>
@@ -147,12 +173,35 @@ const App = () => {
               deleteTask={deleteTask}
             />
             <MonthlyView tasks={tasks} />
-            <Print tasks={tasks} listName={currentList?.title || "Liste"} />
+
+            <button
+              className="print-button"
+              onClick={() =>
+                navigate("/print", {
+                  state: {
+                    tasks,
+                    listName: currentList?.title,
+                    listType: currentList?.type,
+                  },
+                })
+              }
+            >
+              Drucken 🖨️
+            </button>
           </>
         )}
       </div>
     </div>
   );
 };
+
+const App = () => (
+  <Router>
+    <Routes>
+      <Route path="/" element={<MainApp />} />
+      <Route path="/print" element={<PrintPage />} />
+    </Routes>
+  </Router>
+);
 
 export default App;

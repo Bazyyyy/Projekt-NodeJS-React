@@ -12,43 +12,40 @@ const TaskItem = ({ task, toggleTaskDone, deleteTask }) => {
     deadlineDate <= today.setDate(today.getDate() + 2);
 
   return (
-    <li className={`task-item ${task.completed ? "completed" : ""}`}>
-      <div className="task-item-content">
-        {/* Deadline-Anzeige */}
-        {task.deadline && (
-          <small
-            className={`task-item-deadline ${
-              isOverdue ? "overdue" : isSoon ? "soon" : ""
-            }`}
-          >
-            {task.completed
-              ? `Erledigt am: ${task.deadline}`
-              : `Zu erledigen bis: ${task.deadline}`}
-            {isOverdue && !task.completed && " ⏰ Überfällig!"}
-            {isSoon && !task.completed && " ⚠️ bald fällig"}
-          </small>
-        )}
-
-        {/* Aufgabe mit Checkbox */}
-        <label className="task-item-left">
-          <input
-            type="checkbox"
-            checked={task.completed}
-            onChange={() => toggleTaskDone(task.id, task.completed)}
-          />
-          <span className="task-item-title">{task.title}</span>
-        </label>
-
-        {/* Delete-Button */}
-        <button
-          className="task-item-delete-button"
-          onClick={() => deleteTask(task.id)}
-          title="Aufgabe löschen"
+    <li
+  className={`task-item ${task.completed ? "completed" : ""}`}
+  onClick={() => toggleTaskDone(task.id, task.completed)}
+>
+  <div className="task-item-content">
+    <div className="task-title-deadline">
+      <span className="task-item-title">{task.title}</span>
+      {task.deadline && (
+        <small
+          className={`task-item-deadline ${
+            isOverdue ? "overdue" : isSoon ? "soon" : ""
+          }`}
         >
-          🗑
-        </button>
-      </div>
-    </li>
+          {task.completed
+            ? `Erledigt am: ${task.deadline}`
+            : `Zu erledigen bis: ${task.deadline}`}
+          {isOverdue && !task.completed && " ⏰ Überfällig!"}
+          {isSoon && !task.completed && " ⚠️ bald fällig"}
+        </small>
+      )}
+    </div>
+
+    <button
+      className="task-item-delete-button"
+      onClick={(e) => {
+        e.stopPropagation(); // Verhindert Toggle bei Klick auf Löschen
+        deleteTask(task.id);
+      }}
+    >
+      🗑️
+    </button>
+  </div>
+</li>
+
   );
 };
 

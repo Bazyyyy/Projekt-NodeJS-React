@@ -1,75 +1,140 @@
 import React, { useState } from "react";
-import Calendar from "react-calendar";
 import "./MonthlyView.css";
 
-const formatDateYYYYMMDD = (date) => {
-  const yyyy = date.getFullYear();
-  const mm = String(date.getMonth() + 1).padStart(2, "0");
-  const dd = String(date.getDate()).padStart(2, "0");
-  return `${yyyy}-${mm}-${dd}`;
+const getCalendarWeek = (date) => {
+  const tempDate = new Date(date.getTime());
+  tempDate.setHours(0, 0, 0, 0);
+  tempDate.setDate(tempDate.getDate() + 4 - (tempDate.getDay() || 7));
+  const yearStart = new Date(tempDate.getFullYear(), 0, 1);
+  const weekNo = Math.ceil(((tempDate - yearStart) / 86400000 + 1) / 7);
+  return weekNo;
 };
 
-const MonthlyView = ({ tasks, toggleTaskDone, deleteTask }) => {
-  const [date, setDate] = useState(new Date());
+const MonthlyView = ({ tasks }) => {
+  const today = new Date();
+  const [currentDate, setCurrentDate] = useState(new Date());
 
-  const handleDateChange = (newDate) => {
-    setDate(newDate);
+  const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+  const endOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+  const startDay = (startOfMonth.getDay() + 6) % 7; // Montag = 0
+  const daysInMonth = endOfMonth.getDate();
+
+  const taskDates = tasks.map((task) => {
+    const d = new Date(task.deadline);
+    return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+  });
+
+  const prevMonth = () => {
+    const newDate = new Date(currentDate);
+    newDate.setMonth(currentDate.getMonth() - 1);
+    setCurrentDate(newDate);
   };
 
-  const goToToday = () => {
-    setDate(new Date());
+  const nextMonth = () => {
+    const newDate = new Date(currentDate);
+    newDate.setMonth(currentDate.getMonth() + 1);
+    setCurrentDate(newDate);
   };
 
-  const currentMonth = date.getMonth();
-  const daysInMonth = new Date(date.getFullYear(), currentMonth + 1, 0).getDate();
+  const getMonthName = (month) =>
+    new Date(0, month).toLocaleString("de-DE", { month: "long" });
 
-  const tasksByDay = tasks.reduce((acc, task) => {
-    if (task.deadline) {
-      const taskDate = new Date(task.deadline);
-      if (
-        taskDate.getMonth() === currentMonth &&
-        taskDate.getFullYear() === date.getFullYear()
-      ) {
-        const day = taskDate.getDate();
-        acc[day] = (acc[day] || 0) + 1;
+  const weeks = [];
+  let day = 1 - startDay;
+
+  while (day <= daysInMonth) {
+    const week = [];
+    for (let i = 0; i < 7; i++, day++) {
+      if (day > 0 && day <= daysInMonth) {
+        week.push(new Date(currentDate.getFullYear(), currentDate.getMonth(), day));
+      } else {
+        week.push(null);
       }
     }
-    return acc;
-  }, {});
+    weeks.push(week);
+  }
 
   return (
-    <div className="calendar-container">
-      <button className="go-to-today-button" onClick={goToToday}>
-        Heute
-      </button>
+    <div className="monthly-view">
 
-      <Calendar
-        onChange={handleDateChange}
-        value={date}
-        tileContent={({ date: tileDate, view }) => {
-          if (view === "month") {
-            const tileDateString = formatDateYYYYMMDD(tileDate);
-            const hasTask = tasks.some((task) => task.deadline === tileDateString);
-            return hasTask ? <div className="calendar-task-indicator" /> : null;
-          }
-          return null;
-        }}
-      />
+      <div className="calendar-nav">
+        <button onClick={prevMonth}>«</button>
 
-      <h3>📅 Monatsübersicht ({date.toLocaleString("default", { month: "long" })})</h3>
-      <div className="calendar-grid">
-        {[...Array(daysInMonth)].map((_, i) => {
-          const day = i + 1;
-          return (
-            <div key={day} className="calendar-day">
-              <span>{day}</span>
-              {tasksByDay[day] && (
-                <span className="task-dot" title={`${tasksByDay[day]} Aufgabe(n)`}></span>
-              )}
-            </div>
-          );
-        })}
+        <select
+          value={currentDate.getMonth()}
+          onChange={(e) => {
+            const updated = new Date(currentDate);
+            updated.setMonth(Number(e.target.value));
+            setCurrentDate(updated);
+          }}
+        >
+          {Array.from({ length: 12 }, (_, i) => (
+            <option key={i} value={i}>
+              {getMonthName(i)}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={currentDate.getFullYear()}
+          onChange={(e) => {
+            const updated = new Date(currentDate);
+            updated.setFullYear(Number(e.target.value));
+            setCurrentDate(updated);
+          }}
+        >
+          {Array.from({ length: 11 }, (_, i) => {
+            const year = today.getFullYear() - 5 + i;
+            return (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            );
+          })}
+        </select>
+
+        <button onClick={nextMonth}>»</button>
       </div>
+
+      <table className="calendar">
+        <thead>
+          <tr>
+            <th>KW</th>
+            {["MO", "DI", "MI", "DO", "FR", "SA", "SO"].map((d) => (
+              <th key={d}>{d}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {weeks.map((week, i) => (
+            <tr key={i}>
+              <td className="kw">
+                {week[0] ? getCalendarWeek(week[0]) : ""}
+              </td>
+              {week.map((date, idx) => {
+                const isToday =
+                  date &&
+                  date.toDateString() === today.toDateString();
+
+                const hasTask =
+                  date &&
+                  taskDates.includes(`${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`);
+
+                return (
+                  <td
+                    key={idx}
+                    className={`${isToday ? "today" : ""} ${
+                      hasTask ? "has-task" : ""
+                    }`}
+                  >
+                    {date ? date.getDate() : ""}
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
