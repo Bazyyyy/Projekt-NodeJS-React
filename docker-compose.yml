@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend/todo-backend
+    ports:
+      - "5050:5050"
+    volumes:
+      - ./backend/todo-backend/todo.db:/app/todo.db
+    environment:
+      - NODE_ENV=production
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - backend
