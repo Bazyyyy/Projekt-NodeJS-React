@@ -1,39 +1,58 @@
 .monthly-view {
-  margin-top: 30px;
-  background-color: var(--card-bg);
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  margin: 2rem 0;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.monthly-view h3 {
-  margin-bottom: 15px;
+.calendar-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.calendar-nav button {
+  padding: 5px 10px;
   font-size: 1.2rem;
-  color: var(--text-color);
+  cursor: pointer;
 }
 
-.calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 10px;
+.calendar-nav select {
+  padding: 5px 10px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
-.calendar-day {
-  background: var(--bg-color-light);
-  padding: 10px;
-  border-radius: 8px;
+.calendar {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.calendar th,
+.calendar td {
+  width: 12.5%;
+  height: 40px;
   text-align: center;
-  position: relative;
+  vertical-align: middle;
+  border: 1px solid #ddd;
 }
 
-.task-dot {
-  width: 8px;
-  height: 8px;
-  background: red;
-  border-radius: 50%;
-  display: inline-block;
-  position: absolute;
-  bottom: 8px;
-  left: 50%;
-  transform: translateX(-50%);
+.calendar td.has-task {
+  color: red;
+  font-weight: bold;
+}
+
+.calendar td.today {
+  border: 2px solid blue;
+  background-color: #eaf4ff;
+}
+
+.calendar .kw {
+  font-weight: bold;
+  background-color: #f4f4f4;
 }

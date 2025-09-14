@@ -1,0 +1,70 @@
+/* Standardansicht: verstecke print-preview */
+.print-preview {
+  display: none;
+}
+
+/* Nur beim Drucken: nur print-preview anzeigen */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+    font-family: Arial, sans-serif;
+    margin: 20mm;
+    font-size: 12pt;
+  }
+
+  body * {
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .print-preview,
+  .print-preview * {
+    visibility: visible !important;
+    display: block !important;
+    position: static !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .print-preview {
+    margin: 0 auto;
+    width: 100%;
+    padding: 0;
+    page-break-inside: avoid;
+  }
+
+  .print-preview h2 {
+    font-size: 18pt;
+    margin-bottom: 6px;
+  }
+
+  .print-preview h4 {
+    font-size: 12pt;
+    color: #666;
+    margin-bottom: 10px;
+  }
+
+  .print-date {
+    font-size: 11pt;
+    margin-bottom: 14px;
+    font-style: italic;
+  }
+
+  .task-item {
+    font-size: 13pt;
+    padding: 6px 0;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .task-item.done {
+    text-decoration: line-through;
+    color: #888;
+  }
+
+  .empty-task {
+    color: #aaa;
+    font-style: italic;
+  }
+}
